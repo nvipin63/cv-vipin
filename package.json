@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint src/App.tsx src/main.tsx",
+    "build": "tsc -b && vite build && node scripts/prerender-portfolio.mjs",
+    "lint": "eslint src/App.tsx src/main.tsx src/components/PortfolioChat.tsx src/pages/ProjectDetail.tsx src/data/portfolio.ts src/lib/analytics.ts",
+    "resume": "python3 scripts/generate-resume.py",
+    "test": "node scripts/validate-portfolio.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

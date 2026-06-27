@@ -1,0 +1,829 @@
+{
+  "profile": {
+    "name": "Vipin Neekamparambath",
+    "headline": "Agentic AI Engineer",
+    "supportingTitle": "GenAI solution architecture and engineering digitization",
+    "location": "Munich, Germany",
+    "email": "nvipin63@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/vipin-n",
+    "summary": "I design and deliver production-minded agentic systems that connect engineering workflows, trusted knowledge, coordinated tools, and the people responsible for the final decision.",
+    "about": "With 10+ years across engineering automation and digital transformation, I bring engineering-domain depth to multi-agent orchestration, retrieval-augmented generation, MCP-enabled integration, and AI copilots. My work sits where practical delivery, technical architecture, and adoption meet."
+  },
+  "metrics": [
+    {
+      "id": "metric-years",
+      "value": "10+",
+      "label": "years across engineering and transformation",
+      "sourceId": "profile-summary"
+    },
+    {
+      "id": "metric-roles",
+      "value": "5",
+      "label": "industry roles across the engineering lifecycle",
+      "sourceId": "career-history"
+    },
+    {
+      "id": "metric-systems",
+      "value": "9",
+      "label": "featured AI and automation systems",
+      "sourceId": "project-overview"
+    },
+    {
+      "id": "metric-domains",
+      "value": "3",
+      "label": "core AI domains: requirements, quality, simulation",
+      "sourceId": "project-overview"
+    }
+  ],
+  "experience": [
+    {
+      "id": "accenture",
+      "company": "Accenture DACH",
+      "location": "Munich, Germany",
+      "role": "Senior Analyst",
+      "period": "Aug 2023 - Present",
+      "phase": "Agentic systems",
+      "summary": "Leading Agentic AI and GenAI initiatives for product lifecycle management and engineering digitization.",
+      "highlights": [
+        "Architect an Engineering Orchestrator coordinating agents across requirements, PLM, design, simulation, and downstream lifecycle workflows.",
+        "Serve as development lead for end-to-end FMEA agents, shaping workflow decomposition, agent responsibilities, prompts, tools, and validation.",
+        "Lead requirements engineering and requirements management agents using the Deep Agents framework.",
+        "Develop retrieval and knowledge-management capabilities connecting critical engineering data with reusable process guidance."
+      ],
+      "outcome": "Connected previously separate engineering activities through reusable agent, tool, and knowledge patterns.",
+      "projectSlugs": [
+        "engineering-orchestrator",
+        "fmea-agents",
+        "requirements-agents",
+        "non-conformity-agents",
+        "fem-copilot"
+      ],
+      "sourceId": "experience-accenture"
+    },
+    {
+      "id": "altair",
+      "company": "Altair Engineering",
+      "location": "Bengaluru, India",
+      "role": "Technical Specialist",
+      "period": "Jan 2022 - Jul 2023",
+      "phase": "Automation delivery",
+      "summary": "Owned planning, client engagement, requirements, and delivery for engineering automation initiatives.",
+      "highlights": [
+        "Designed, tested, and deployed tools for engineering pre-processing, post-processing, and report generation.",
+        "Delivered end-to-end CAE automation that reduced repetitive engineering effort and improved workflow consistency."
+      ],
+      "outcome": "Reduced repetitive engineering work while making delivery more consistent.",
+      "projectSlugs": [
+        "chassis-automation",
+        "alloy-wheel-dvp-automation",
+        "odb-compression",
+        "google-slides-report-automation"
+      ],
+      "sourceId": "experience-altair"
+    },
+    {
+      "id": "zf",
+      "company": "ZF Friedrichshafen",
+      "location": "Hyderabad, India",
+      "role": "Specialist",
+      "period": "Jun 2021 - Jan 2022",
+      "phase": "Knowledge reuse",
+      "summary": "Made reusable engineering automation easier to discover, govern, and share across divisions.",
+      "highlights": [
+        "Managed a centralized Azure Repos library for engineering macro collections.",
+        "Built a Microsoft Power Apps script-library application for cross-functional teams."
+      ],
+      "outcome": "Improved access to reusable engineering scripts across cross-functional teams.",
+      "projectSlugs": [],
+      "sourceId": "experience-zf"
+    },
+    {
+      "id": "valeo",
+      "company": "Valeo",
+      "location": "Chennai, India",
+      "role": "Automation Engineer",
+      "period": "Jan 2018 - Jun 2021",
+      "phase": "Team foundations",
+      "summary": "Founded the Chennai CAE automation team and served as its single point of contact.",
+      "highlights": [
+        "Established work instructions, GUI and script templates, quality checklists, and team standards.",
+        "Built dashboards to track specifications, delivery progress, and engineering time savings."
+      ],
+      "outcome": "Created the operating standards and visibility needed for a new automation capability.",
+      "projectSlugs": [
+        "chassis-automation"
+      ],
+      "sourceId": "experience-valeo"
+    },
+    {
+      "id": "tcs",
+      "company": "Tata Consultancy Services",
+      "location": "Bengaluru, India",
+      "role": "Systems Engineer",
+      "period": "Nov 2014 - Dec 2017",
+      "phase": "Engineering depth",
+      "summary": "Built an engineering foundation across CAE automation, vehicle safety, and mechanical design.",
+      "highlights": [
+        "Created HyperWorks scripts that improved FE modelling efficiency and reinforced CAE quality standards.",
+        "Supported vehicle subsystem assembly in HyperMesh and engineering revisions in UG NX."
+      ],
+      "outcome": "Built first-hand understanding of the engineering work later targeted by automation and AI.",
+      "projectSlugs": [
+        "chassis-automation"
+      ],
+      "sourceId": "experience-tcs"
+    }
+  ],
+  "projects": [
+    {
+      "slug": "engineering-orchestrator",
+      "title": "Engineering Orchestrator",
+      "category": "Orchestration",
+      "featured": true,
+      "oneLine": "A multi-agent operating layer connecting requirements, PLM, design, simulation, and downstream lifecycle workflows.",
+      "stack": [
+        "Agentic AI",
+        "LangChain",
+        "Azure",
+        "RAG",
+        "MCP"
+      ],
+      "problem": "Engineering work spans specialized tools, fragmented knowledge, and lifecycle hand-offs. A useful AI layer has to coordinate these systems without hiding ownership or process constraints.",
+      "ownership": "Architecture and delivery leadership across agent responsibilities, tool boundaries, retrieval patterns, and alignment with engineering stakeholders.",
+      "approach": [
+        "Decompose lifecycle work into bounded agent responsibilities.",
+        "Connect enterprise knowledge and engineering tools through explicit retrieval and tool contracts.",
+        "Keep validation and human decision points visible in the workflow."
+      ],
+      "decisions": [
+        "Prefer orchestrated specialist agents over one general-purpose prompt.",
+        "Treat tool access and knowledge retrieval as separate, observable concerns.",
+        "Design for reusable process patterns rather than a single demonstration."
+      ],
+      "impact": [
+        "Created a cohesive AI-assisted layer across previously separate lifecycle activities.",
+        "Established reusable orchestration patterns for additional engineering use cases."
+      ],
+      "lessons": [
+        "Agent boundaries are most useful when they match real process ownership.",
+        "Adoption depends as much on validation and transparency as model capability."
+      ],
+      "confidentiality": "Public description is intentionally generalized. Client names, internal architecture, proprietary data, and operational metrics are excluded.",
+      "sourceId": "project-engineering-orchestrator"
+    },
+    {
+      "slug": "fmea-agents",
+      "title": "FMEA Analysis Agents",
+      "category": "Quality",
+      "featured": true,
+      "oneLine": "End-to-end agents supporting workflow decomposition, context retrieval, analysis guidance, validation, and structured FMEA outputs.",
+      "stack": [
+        "LangGraph",
+        "LLM orchestration",
+        "Human review"
+      ],
+      "problem": "FMEA analysis requires structured reasoning, domain context, repeatable outputs, and accountable expert review rather than free-form text generation.",
+      "ownership": "Development lead for workflow decomposition, agent responsibilities, prompt and tool design, validation strategy, and team delivery.",
+      "approach": [
+        "Represent analysis as explicit stages with bounded inputs and outputs.",
+        "Retrieve supporting context before analysis and preserve structured results.",
+        "Place validation and expert review at consequential transitions."
+      ],
+      "decisions": [
+        "Use graph orchestration for inspectable state transitions.",
+        "Separate context retrieval, analysis guidance, and validation.",
+        "Optimize for traceable structured output rather than conversational fluency."
+      ],
+      "impact": [
+        "Made an expert workflow more consistent and easier to inspect.",
+        "Created a repeatable foundation for adjacent quality-analysis use cases."
+      ],
+      "lessons": [
+        "Quality workflows need explicit uncertainty and review states.",
+        "Structured intermediate outputs make agent behavior easier to validate."
+      ],
+      "confidentiality": "The workflow description is generalized and excludes proprietary failure data, prompts, integrations, and evaluation results.",
+      "sourceId": "project-fmea-agents"
+    },
+    {
+      "slug": "requirements-agents",
+      "title": "Requirements Engineering Agents",
+      "category": "Requirements",
+      "featured": true,
+      "oneLine": "Agents assisting requirements elicitation, analysis, interpretation, management, and traceability-oriented work.",
+      "stack": [
+        "Deep Agents",
+        "Requirements engineering",
+        "Tool integration"
+      ],
+      "problem": "Requirements work combines large context, ambiguity, domain rules, and traceability obligations that cannot be handled reliably by isolated prompts.",
+      "ownership": "Lead delivery of the agent workflow and coordinate technical implementation with engineering process expectations.",
+      "approach": [
+        "Break the workflow into elicitation, analysis, interpretation, and management tasks.",
+        "Give agents scoped tools and context appropriate to each responsibility.",
+        "Preserve links between source context, analysis, and resulting requirements."
+      ],
+      "decisions": [
+        "Use a deep-agent pattern for longer-running, multi-step work.",
+        "Make traceability a first-class output.",
+        "Keep requirements specialists in the review loop."
+      ],
+      "impact": [
+        "Improved access to process guidance during requirements work.",
+        "Created a reusable agent pattern for traceability-oriented workflows."
+      ],
+      "lessons": [
+        "Good requirements agents clarify ambiguity; they should not silently resolve it.",
+        "Traceability must be designed into the workflow rather than added at the end."
+      ],
+      "confidentiality": "Examples, source requirements, prompts, and enterprise integrations are not published.",
+      "sourceId": "project-requirements-agents"
+    },
+    {
+      "slug": "non-conformity-agents",
+      "title": "Non-Conformity Agents",
+      "category": "Quality",
+      "featured": false,
+      "oneLine": "Quality-workflow agents helping engineers navigate context, evidence, and process-driven next actions.",
+      "stack": [
+        "GenAI",
+        "RAG",
+        "Quality workflows"
+      ],
+      "problem": "Non-conformity work requires engineers to connect issue context, supporting evidence, and prescribed process steps across fragmented information.",
+      "ownership": "Built the agent workflow and retrieval behavior around practical quality-process needs.",
+      "approach": [
+        "Retrieve relevant issue and process context.",
+        "Organize evidence before proposing next actions.",
+        "Keep the engineer responsible for disposition and approval."
+      ],
+      "decisions": [
+        "Ground suggestions in retrieved evidence.",
+        "Separate evidence summarization from recommended actions.",
+        "Avoid autonomous decisions in consequential quality steps."
+      ],
+      "impact": [
+        "Made quality context and process guidance easier to navigate.",
+        "Reduced friction in identifying evidence and appropriate next steps."
+      ],
+      "lessons": [
+        "Evidence provenance is essential in quality workflows.",
+        "A useful assistant narrows the search space without replacing accountable decisions."
+      ],
+      "confidentiality": "No product, defect, customer, or internal quality-system data is included.",
+      "sourceId": "project-non-conformity-agents"
+    },
+    {
+      "slug": "fem-copilot",
+      "title": "FEM Copilot",
+      "category": "Simulation",
+      "featured": false,
+      "oneLine": "A context-aware assistant for model creation, boundary conditions, material selection, and finite-element analysis steps.",
+      "stack": [
+        "GenAI",
+        "FEM",
+        "Simulation automation"
+      ],
+      "problem": "Finite-element workflows require many context-dependent setup decisions and repeated navigation between modelling practice, material data, and analysis steps.",
+      "ownership": "Shaped a copilot concept combining engineering context with workflow-oriented guidance.",
+      "approach": [
+        "Provide step-aware suggestions rather than generic simulation answers.",
+        "Connect recommendations to modelling context and analysis stage.",
+        "Keep engineering assumptions visible for review."
+      ],
+      "decisions": [
+        "Use a copilot pattern instead of autonomous model creation.",
+        "Surface assumptions alongside recommendations.",
+        "Prioritize workflow guidance and consistency."
+      ],
+      "impact": [
+        "Made domain guidance available closer to the modelling workflow.",
+        "Demonstrated how GenAI can complement established simulation automation."
+      ],
+      "lessons": [
+        "Engineering copilots need domain context more than broad conversational ability.",
+        "Visible assumptions are critical when suggestions affect analysis quality."
+      ],
+      "confidentiality": "No proprietary models, solver inputs, material data, or customer results are shown.",
+      "sourceId": "project-fem-copilot"
+    },
+    {
+      "slug": "chassis-automation",
+      "title": "Chassis Automation Tool",
+      "category": "Automation",
+      "featured": false,
+      "oneLine": "Interactive and batch automation for CAD organization, mesh creation, seam weld creation, and engineering quality checks.",
+      "stack": [
+        "HyperMesh",
+        "Tcl/Tk",
+        "CAE automation"
+      ],
+      "problem": "Chassis pre-processing contains repetitive, quality-sensitive steps that consume engineering time and vary when executed manually.",
+      "ownership": "Designed and delivered interactive and batch automation covering core preprocessing tasks and quality checks.",
+      "approach": [
+        "Translate engineering work instructions into repeatable automation stages.",
+        "Support both guided interactive use and batch processing.",
+        "Embed quality checks close to the automated operation."
+      ],
+      "decisions": [
+        "Preserve interactive control where engineering judgement is needed.",
+        "Use batch execution for repeatable high-volume steps.",
+        "Treat quality checks as part of the workflow, not a final afterthought."
+      ],
+      "impact": [
+        "Reduced repetitive preprocessing effort.",
+        "Improved workflow consistency and reinforced engineering quality standards."
+      ],
+      "lessons": [
+        "Successful automation begins with a precise understanding of the manual workflow.",
+        "Reusable templates and checks are as important as execution speed."
+      ],
+      "confidentiality": "The manufacturer, vehicle data, internal scripts, and measured time savings are confidential.",
+      "sourceId": "project-chassis-automation"
+    },
+    {
+      "slug": "alloy-wheel-dvp-automation",
+      "title": "Alloy Wheel DVP Automation",
+      "category": "Automation",
+      "featured": false,
+      "oneLine": "An end-to-end wheel-simulation pipeline spanning pre-processing, analysis preparation, post-processing, and automated report generation.",
+      "stack": [
+        "HyperMesh",
+        "HyperView",
+        "Tcl/Tk",
+        "Altair APIs"
+      ],
+      "problem": "Wheel simulation required repeated modelling, setup, review, and reporting steps, creating avoidable effort and variation across the design-validation workflow.",
+      "ownership": "Developed an end-to-end automation tool that guided the wheel workflow from pre-processing through report generation.",
+      "approach": [
+        "Reduce the workflow to the minimum inputs required from the engineer.",
+        "Automate repeatable pre-processing and post-processing stages.",
+        "Generate reports in HyperView through Altair report APIs."
+      ],
+      "decisions": [
+        "Automate the full DVP path instead of isolated modelling commands.",
+        "Keep user inputs small and explicit.",
+        "Use supported report APIs rather than manual slide assembly."
+      ],
+      "impact": [
+        "Improved wheel-modelling efficiency through end-to-end automation.",
+        "Made report generation faster and more consistent."
+      ],
+      "lessons": [
+        "The largest gains often come from connecting pre-processing and reporting into one workflow.",
+        "Minimal-input automation depends on carefully defined defaults and validation."
+      ],
+      "confidentiality": "The manufacturer, wheel models, simulation criteria, internal scripts, and measured time savings are excluded.",
+      "sourceId": "project-alloy-wheel-dvp-automation"
+    },
+    {
+      "slug": "odb-compression",
+      "title": "Abaqus ODB Compression Tool",
+      "category": "Automation",
+      "featured": true,
+      "oneLine": "A standalone Python utility that reduced large Abaqus ODB result files by approximately 90% through selective variable and frame extraction.",
+      "stack": [
+        "Abaqus",
+        "Python",
+        "Simulation data"
+      ],
+      "problem": "Large Abaqus ODB files were slow to download from compute clusters and expensive to inspect when invariant calculations had to be performed repeatedly.",
+      "ownership": "Built a standalone Python compression tool for engineering teams working with large simulation-result files.",
+      "approach": [
+        "Let users select only the result variables and frames needed for downstream review.",
+        "Write a reduced ODB rather than moving the entire source result set.",
+        "Preserve flexibility for different post-processing needs."
+      ],
+      "decisions": [
+        "Use selective extraction instead of generic file compression.",
+        "Keep the utility standalone so it could fit existing engineering workflows.",
+        "Expose variable and frame selection to the user."
+      ],
+      "impact": [
+        "Achieved an approximately 90% compression ratio on large ODB files.",
+        "Reduced cluster-download time and improved plotting performance by avoiding unnecessary invariant calculations."
+      ],
+      "lessons": [
+        "Engineering-data performance often improves most by removing unneeded domain data, not merely compressing bytes.",
+        "User-controlled selection made the utility reusable across analysis types."
+      ],
+      "confidentiality": "No customer ODB files, simulation results, model details, or proprietary scripts are published.",
+      "sourceId": "project-odb-compression"
+    },
+    {
+      "slug": "google-slides-report-automation",
+      "title": "Google Slides Report Automation",
+      "category": "Reporting",
+      "featured": false,
+      "oneLine": "A form-driven Google Apps Script workflow that assembled engineering reports from uploaded images using a predefined Slides template.",
+      "stack": [
+        "Google Apps Script",
+        "Google Slides",
+        "Workflow automation"
+      ],
+      "problem": "Engineering teams repeatedly assembled image-heavy reports by hand, even when the structure and presentation template were already known.",
+      "ownership": "Created the report-generation script, predefined Slides template, and upload form used to trigger the workflow.",
+      "approach": [
+        "Collect report images and inputs through a simple form.",
+        "Map submitted content into a controlled Google Slides template.",
+        "Trigger report creation automatically after submission."
+      ],
+      "decisions": [
+        "Use a familiar form instead of exposing scripting controls.",
+        "Separate the reusable presentation template from report content.",
+        "Standardize structure while keeping input collection lightweight."
+      ],
+      "impact": [
+        "Reduced manual report assembly.",
+        "Improved consistency across recurring engineering reports."
+      ],
+      "lessons": [
+        "Small workflow automations can remove substantial coordination overhead.",
+        "Templates turn document generation into a maintainable system rather than a one-off script."
+      ],
+      "confidentiality": "The original template, uploaded engineering images, report contents, and organization details are not included.",
+      "sourceId": "project-google-slides-report-automation"
+    }
+  ],
+  "skillGroups": [
+    {
+      "title": "Agent architecture",
+      "items": [
+        {
+          "name": "Multi-agent orchestration",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "fmea-agents"
+          ]
+        },
+        {
+          "name": "LangChain",
+          "projectSlugs": [
+            "engineering-orchestrator"
+          ]
+        },
+        {
+          "name": "LangGraph",
+          "projectSlugs": [
+            "fmea-agents"
+          ]
+        },
+        {
+          "name": "Deep Agents",
+          "projectSlugs": [
+            "requirements-agents"
+          ]
+        },
+        {
+          "name": "Model Context Protocol (MCP)",
+          "projectSlugs": [
+            "engineering-orchestrator"
+          ]
+        },
+        {
+          "name": "Google Agent Development Kit (ADK)",
+          "projectSlugs": [
+            "engineering-orchestrator"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Knowledge and GenAI",
+      "items": [
+        {
+          "name": "RAG and knowledge retrieval",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "non-conformity-agents"
+          ]
+        },
+        {
+          "name": "Prompt and workflow design",
+          "projectSlugs": [
+            "fmea-agents",
+            "requirements-agents"
+          ]
+        },
+        {
+          "name": "AI copilots",
+          "projectSlugs": [
+            "fem-copilot"
+          ]
+        },
+        {
+          "name": "Large language models (LLMs)",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "fmea-agents",
+            "requirements-agents"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Engineering delivery",
+      "items": [
+        {
+          "name": "Requirements engineering",
+          "projectSlugs": [
+            "requirements-agents"
+          ]
+        },
+        {
+          "name": "FMEA and quality",
+          "projectSlugs": [
+            "fmea-agents",
+            "non-conformity-agents"
+          ]
+        },
+        {
+          "name": "CAE and FEM automation",
+          "projectSlugs": [
+            "fem-copilot",
+            "chassis-automation",
+            "alloy-wheel-dvp-automation",
+            "odb-compression"
+          ]
+        },
+        {
+          "name": "Python and Tcl/Tk",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "chassis-automation",
+            "alloy-wheel-dvp-automation",
+            "odb-compression"
+          ]
+        },
+        {
+          "name": "Engineering report automation",
+          "projectSlugs": [
+            "alloy-wheel-dvp-automation",
+            "google-slides-report-automation"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Cloud and delivery platforms",
+      "items": [
+        {
+          "name": "Azure AI Foundry",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "fmea-agents"
+          ]
+        },
+        {
+          "name": "Azure DevOps",
+          "projectSlugs": [
+            "engineering-orchestrator"
+          ]
+        },
+        {
+          "name": "Azure Portal",
+          "projectSlugs": [
+            "engineering-orchestrator"
+          ]
+        },
+        {
+          "name": "Google Cloud Platform (GCP)",
+          "projectSlugs": [
+            "google-slides-report-automation"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "AI-assisted development",
+      "items": [
+        {
+          "name": "Cursor AI",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "fmea-agents"
+          ]
+        },
+        {
+          "name": "OpenAI Codex",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "requirements-agents"
+          ]
+        },
+        {
+          "name": "Claude Code",
+          "projectSlugs": [
+            "fmea-agents",
+            "requirements-agents"
+          ]
+        }
+      ]
+    }
+  ],
+  "education": {
+    "degree": "Master of Technology",
+    "specialization": "Industrial Engineering & Management",
+    "institution": "National Institute of Technology Calicut",
+    "period": "2012 - 2014",
+    "publication": "Optimization of assembly job-shop scheduling using priority dispatching rules",
+    "cgpa": "7.4"
+  },
+  "languages": [
+    "English",
+    "Hindi",
+    "German - A1"
+  ],
+  "sourceSections": [
+    {
+      "id": "profile-summary",
+      "title": "Profile",
+      "href": "/#about",
+      "keywords": [
+        "profile",
+        "summary",
+        "experience",
+        "background",
+        "agentic ai",
+        "solution architect"
+      ],
+      "content": "I am an Agentic AI Engineer based in Munich with 10+ years across engineering automation and digital transformation. I combine engineering-domain knowledge with Python, LangChain, LangGraph, Deep Agents, Google ADK, LLM orchestration, RAG, MCP-enabled integration, Azure AI Foundry, Azure DevOps, Azure Portal, GCP, Cursor AI, OpenAI Codex, Claude Code, agile delivery, and stakeholder alignment."
+    },
+    {
+      "id": "career-history",
+      "title": "Career progression",
+      "href": "/#experience",
+      "keywords": [
+        "career",
+        "companies",
+        "accenture",
+        "altair",
+        "zf",
+        "valeo",
+        "tcs",
+        "work history"
+      ],
+      "content": "I have worked at Accenture DACH, Altair Engineering, ZF Friedrichshafen, Valeo, and Tata Consultancy Services. My progression moves from CAE and FEM automation through reusable engineering platforms to enterprise agentic AI systems."
+    },
+    {
+      "id": "project-overview",
+      "title": "Selected work",
+      "href": "/#work",
+      "keywords": [
+        "projects",
+        "systems",
+        "portfolio",
+        "work"
+      ],
+      "content": "The portfolio includes nine systems spanning engineering orchestration, FMEA, requirements, non-conformity, FEM copilots, CAE automation, simulation-data compression, and report automation."
+    },
+    {
+      "id": "project-engineering-orchestrator",
+      "title": "Engineering Orchestrator",
+      "href": "/work/engineering-orchestrator",
+      "keywords": [
+        "orchestrator",
+        "genai",
+        "multi-agent",
+        "mcp",
+        "plm",
+        "azure",
+        "langchain",
+        "architecture",
+        "tools"
+      ],
+      "content": "I architect an Engineering Orchestrator connecting requirements, PLM, design, simulation, and lifecycle activities through bounded agents, explicit tool access, knowledge retrieval, validation, and visible human decision points."
+    },
+    {
+      "id": "project-fmea-agents",
+      "title": "FMEA Analysis Agents",
+      "href": "/work/fmea-agents",
+      "keywords": [
+        "fmea",
+        "langgraph",
+        "quality",
+        "graph",
+        "validation",
+        "failure"
+      ],
+      "content": "I serve as development lead for FMEA analysis agents. The workflow separates context retrieval, analysis guidance, validation, structured outputs, and expert review using inspectable graph orchestration."
+    },
+    {
+      "id": "project-requirements-agents",
+      "title": "Requirements Engineering Agents",
+      "href": "/work/requirements-agents",
+      "keywords": [
+        "requirements",
+        "deep agents",
+        "deepagents",
+        "traceability",
+        "elicitation"
+      ],
+      "content": "I lead delivery of Deep Agents workflows for requirements elicitation, analysis, interpretation, management, and traceability-oriented work, with scoped tools and expert review."
+    },
+    {
+      "id": "project-non-conformity-agents",
+      "title": "Non-Conformity Agents",
+      "href": "/work/non-conformity-agents",
+      "keywords": [
+        "non-conformity",
+        "nonconformity",
+        "quality",
+        "evidence",
+        "rag"
+      ],
+      "content": "I built agents that retrieve quality context, organize supporting evidence, and guide process-driven next actions while leaving disposition and approval with accountable engineers."
+    },
+    {
+      "id": "project-fem-copilot",
+      "title": "FEM Copilot",
+      "href": "/work/fem-copilot",
+      "keywords": [
+        "fem",
+        "genai",
+        "simulation",
+        "copilot",
+        "boundary conditions",
+        "materials",
+        "cae"
+      ],
+      "content": "I shaped a context-aware FEM copilot for model creation, boundary conditions, material selection, and analysis steps. It surfaces assumptions and supports engineers rather than autonomously creating models."
+    },
+    {
+      "id": "project-chassis-automation",
+      "title": "Chassis Automation Tool",
+      "href": "/work/chassis-automation",
+      "keywords": [
+        "chassis",
+        "hypermesh",
+        "tcl",
+        "automation",
+        "mesh",
+        "weld",
+        "cae"
+      ],
+      "content": "I designed interactive and batch HyperMesh automation for CAD organization, mesh creation, seam weld creation, and embedded quality checks, reducing repetitive preprocessing effort and improving consistency."
+    },
+    {
+      "id": "project-alloy-wheel-dvp-automation",
+      "title": "Alloy Wheel DVP Automation",
+      "href": "/work/alloy-wheel-dvp-automation",
+      "keywords": [
+        "alloy wheel",
+        "wheel",
+        "dvp",
+        "hypermesh",
+        "hyperview",
+        "altair api",
+        "report generation",
+        "simulation automation"
+      ],
+      "content": "I developed an end-to-end alloy-wheel DVP automation tool using HyperMesh, HyperView, Tcl/Tk, and Altair report APIs. It minimized user inputs, connected pre-processing with post-processing, improved modelling efficiency, and automated report generation."
+    },
+    {
+      "id": "project-odb-compression",
+      "title": "Abaqus ODB Compression Tool",
+      "href": "/work/odb-compression",
+      "keywords": [
+        "odb",
+        "abaqus",
+        "compression",
+        "python",
+        "cluster",
+        "simulation data",
+        "90%",
+        "invariant"
+      ],
+      "content": "I built a standalone Python utility that reduced large Abaqus ODB result files by approximately 90%. Users could select required variables and frames, reducing cluster-download time and improving plotting performance by avoiding unnecessary invariant calculations."
+    },
+    {
+      "id": "project-google-slides-report-automation",
+      "title": "Google Slides Report Automation",
+      "href": "/work/google-slides-report-automation",
+      "keywords": [
+        "google slides",
+        "google apps script",
+        "report",
+        "reporting",
+        "form",
+        "images",
+        "template"
+      ],
+      "content": "I created a Google Apps Script workflow that generated reports from uploaded images using a predefined Google Slides template. A simple form collected inputs and triggered automatic report creation."
+    },
+    {
+      "id": "contact",
+      "title": "Contact me",
+      "href": "/#contact",
+      "keywords": [
+        "contact",
+        "email",
+        "linkedin",
+        "hire",
+        "available",
+        "reach"
+      ],
+      "content": "I am based in Munich, Germany. Contact me at nvipin63@gmail.com or through linkedin.com/in/vipin-n."
+    }
+  ]
+}

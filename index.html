@@ -13,60 +13,94 @@
     />
     <meta name="author" content="Vipin Neekamparambath" />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://cv-vipin.vercel.app/" />
 
     <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://cv-vipin.vercel.app/" />
     <meta property="og:title" content="Vipin Neekamparambath | Agentic AI Engineer" />
     <meta
       property="og:description"
       content="Agentic AI, GenAI, and engineering digitization for complex enterprise workflows."
     />
+    <meta property="og:image" content="https://cv-vipin.vercel.app/og-vipin.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vipin Neekamparambath, Agentic AI Engineer" />
+    <meta property="og:site_name" content="Vipin Neekamparambath" />
     <meta property="og:locale" content="en_US" />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Vipin Neekamparambath | Agentic AI Engineer" />
     <meta
       name="twitter:description"
       content="Agentic AI, GenAI, and engineering digitization for complex enterprise workflows."
     />
+    <meta name="twitter:image" content="https://cv-vipin.vercel.app/og-vipin.png" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/vipin-profile.jpg" as="image" type="image/jpeg" fetchpriority="high" />
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Vipin Neekamparambath",
-        "jobTitle": "Agentic AI Engineer",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Munich",
-          "addressCountry": "DE"
-        },
-        "email": "mailto:nvipin63@gmail.com",
-        "sameAs": ["https://www.linkedin.com/in/vipin-n"],
-        "knowsAbout": [
-          "Agentic AI",
-          "Generative AI",
-          "LangChain",
-          "LangGraph",
-          "Deep Agents",
-          "Retrieval-Augmented Generation",
-          "Model Context Protocol",
-          "Engineering Digitization",
-          "Product Lifecycle Management",
-          "Python"
-        ],
-        "alumniOf": {
-          "@type": "CollegeOrUniversity",
-          "name": "National Institute of Technology Calicut"
+        "@type": "ProfilePage",
+        "@id": "https://cv-vipin.vercel.app/#profile",
+        "url": "https://cv-vipin.vercel.app/",
+        "dateModified": "2026-06-27",
+        "mainEntity": {
+          "@type": "Person",
+          "@id": "https://cv-vipin.vercel.app/#vipin",
+          "name": "Vipin Neekamparambath",
+          "url": "https://cv-vipin.vercel.app/",
+          "image": "https://cv-vipin.vercel.app/vipin-profile.jpg",
+          "description": "Agentic AI Engineer connecting complex engineering workflows, coordinated agents, trusted knowledge, and enterprise tools.",
+          "jobTitle": "Agentic AI Engineer",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Munich",
+            "addressCountry": "DE"
+          },
+          "email": "mailto:nvipin63@gmail.com",
+          "sameAs": ["https://www.linkedin.com/in/vipin-n"],
+          "knowsAbout": [
+            "Agentic AI",
+            "Generative AI",
+            "LangChain",
+            "LangGraph",
+            "Deep Agents",
+            "Retrieval-Augmented Generation",
+            "Model Context Protocol",
+            "Engineering Digitization",
+            "Product Lifecycle Management",
+            "Python"
+          ],
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "National Institute of Technology Calicut"
+          }
         }
       }
+    </script>
+    <script>
+      try {
+        var savedTheme = localStorage.getItem('vipin-theme')
+        var useDark = savedTheme ? savedTheme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.classList.toggle('dark', useDark)
+        document.documentElement.classList.toggle('light', !useDark)
+      } catch (_) {}
     </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width: 760px; margin: 64px auto; padding: 24px; font-family: system-ui, sans-serif;">
+        <h1>Vipin Neekamparambath - Agentic AI Engineer</h1>
+        <p>Munich-based engineer with 10+ years across engineering automation, digital transformation, and enterprise agentic AI.</p>
+        <p><a href="/Vipin-Neekamparambath-Resume.pdf">Download the résumé</a> or email <a href="mailto:nvipin63@gmail.com">nvipin63@gmail.com</a>.</p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

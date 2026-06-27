@@ -1,18 +1,18 @@
 # Vipin Neekamparambath - Interactive CV
 
-A focused, responsive portfolio for Vipin Neekamparambath: Agentic AI, GenAI, and engineering digitization.
+An evidence-led portfolio for an Agentic AI Engineer working at the intersection of enterprise AI and engineering digitization.
 
-## What is included
+## Experience
 
-- Interactive single-page portfolio
-- Career timeline and selected enterprise AI projects
-- Skills, education, languages, and contact details
-- Dark/light theme switcher
-- Downloadable PDF resume
-- SEO metadata and Person structured data
-- Vercel Analytics
+- 30-second overview and URL-persisted technical-depth mode
+- Interactive career progression from CAE automation to agentic systems
+- Nine searchable, shareable, confidentiality-safe case studies
+- Capability-to-project evidence mapping
+- Cited portfolio guide with five-question sessions and deterministic fallback
+- Synchronized two-page ATS-friendly résumé
+- Static case-study prerendering, sitemap, social preview, structured data, and Vercel Analytics
 
-The original repository's AI chatbot, voice mode, case studies, and operations dashboard are intentionally not mounted in this first personalized version. Their source files remain in the fork for future reuse.
+The canonical content source is [`src/data/portfolio.json`](src/data/portfolio.json). The home page, case studies, assistant grounding, evaluations, metadata generation, and résumé generator all consume it.
 
 ## Local development
 
@@ -21,18 +21,33 @@ npm install
 npm run dev
 ```
 
-## Production build
+The portfolio guide works without credentials using approved deterministic answers. To enable generated answers, add:
 
 ```bash
-npm run build
-npm run preview
+ANTHROPIC_API_KEY=...
+ANTHROPIC_MODEL=claude-haiku-4-5-20251001
 ```
 
-The production build no longer needs the original portfolio's LLM, RAG, Langfuse, or Supabase credentials.
+Generated answers remain bounded to selected source sections. The application does not persist prompts or transcripts.
 
-## Personal assets
+## Validation and production
 
-- Replace the `VN` initials card in `src/App.tsx` with a portrait when one is available.
-- Add a canonical URL and social sharing image in `index.html` after choosing a deployment domain.
-- The public site uses email and LinkedIn; the phone number from the resume is intentionally omitted.
-- Deployable static assets live in `site-public/`; the fork's original `public/` directory is retained only as dormant reference material and excluded from Vercel.
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+`npm test` validates source references and 43 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates `dist/sitemap.xml`.
+
+Set `SITE_URL` during production builds when the deployment domain differs from the documented `https://cv-vipin.vercel.app` fallback.
+
+## Résumé and assets
+
+```bash
+npm run resume
+```
+
+The résumé generator reads the portfolio JSON, requires `reportlab` and `pypdf`, writes the reviewed artifact to `output/pdf/`, and synchronizes the public download in `site-public/`.
+
+The deployable portrait, social card, résumé, favicon, and font assets live in `site-public/`. Legacy files and media from the original fork have been removed.
