@@ -99,6 +99,9 @@ export default function ProjectDetail({ slug }: ProjectDetailProps) {
             <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
               {project.category}
             </span>
+            <span className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+              {project.systemType === 'agentic-ai' ? 'Agentic AI / GenAI' : 'Engineering automation'}
+            </span>
             <span className="text-sm text-muted-foreground">Public, generalized case study</span>
           </div>
           <h1 className="mt-5 max-w-4xl font-display text-4xl font-bold tracking-[-0.04em] sm:text-5xl md:text-6xl">

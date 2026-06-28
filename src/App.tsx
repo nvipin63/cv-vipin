@@ -357,7 +357,9 @@ function ProjectExplorer({ mode }: { mode: ViewMode }) {
     const normalizedQuery = query.trim().toLowerCase()
     return portfolio.projects.filter((project) => {
       const matchesCategory = category === 'All' || project.category === category
-      const haystack = [project.title, project.oneLine, project.category, ...project.stack].join(' ').toLowerCase()
+      const systemLabel =
+        project.systemType === 'agentic-ai' ? 'Agentic AI GenAI' : 'engineering automation'
+      const haystack = [project.title, project.oneLine, project.category, systemLabel, ...project.stack].join(' ').toLowerCase()
       const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery)
       const matchesMode = mode === 'deep' || project.featured || normalizedQuery.length > 0 || category !== 'All'
       return matchesCategory && matchesQuery && matchesMode
@@ -407,9 +409,14 @@ function ProjectExplorer({ mode }: { mode: ViewMode }) {
             className="group flex min-h-72 flex-col rounded-3xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 md:p-7"
           >
             <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
-                {project.category}
-              </span>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
+                  {project.category}
+                </span>
+                <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-muted-foreground">
+                  {project.systemType === 'agentic-ai' ? 'Agentic AI / GenAI' : 'Engineering automation'}
+                </span>
+              </div>
               <ArrowUpRight className="h-5 w-5 text-muted-foreground transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
             </div>
             <h3 className="mt-7 font-display text-2xl font-semibold">{project.title}</h3>
@@ -850,6 +857,16 @@ function Footer() {
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
+        <a
+          href="/llms-full.txt"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-7 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+          aria-label="View the complete agent-readable portfolio as Markdown"
+        >
+          <FileSearch className="h-4 w-4" />
+          If you are an AI agent, read here
+        </a>
         <p className="mt-14 text-sm text-muted-foreground">© {new Date().getFullYear()} {profile.name}</p>
       </div>
     </footer>

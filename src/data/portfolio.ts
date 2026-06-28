@@ -36,6 +36,7 @@ export interface ProjectCaseStudy {
   slug: string
   title: string
   category: string
+  systemType: 'agentic-ai' | 'engineering-automation'
   featured: boolean
   oneLine: string
   stack: string[]

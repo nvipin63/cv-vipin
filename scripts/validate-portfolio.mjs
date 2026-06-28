@@ -5,10 +5,80 @@ import {
   publicCitations,
   selectSources,
 } from '../server/portfolio-grounding.mjs'
+import { generateAgentDocuments } from '../server/portfolio-markdown.mjs'
 
 const errors = []
 const sourceIds = new Set(portfolio.sourceSections.map((source) => source.id))
 const projectSlugs = new Set(portfolio.projects.map((project) => project.slug))
+const allowedSystemTypes = new Set(['agentic-ai', 'engineering-automation'])
+
+for (const project of portfolio.projects) {
+  if (!allowedSystemTypes.has(project.systemType)) {
+    errors.push(`Project ${project.slug} has invalid system type ${project.systemType}`)
+  }
+}
+
+const agenticProjects = portfolio.projects.filter((project) => project.systemType === 'agentic-ai')
+const automationProjects = portfolio.projects.filter(
+  (project) => project.systemType === 'engineering-automation',
+)
+if (agenticProjects.length !== 5 || automationProjects.length !== 4) {
+  errors.push(
+    `Expected 5 Agentic AI and 4 automation projects, found ${agenticProjects.length} and ${automationProjects.length}`,
+  )
+}
+
+const agentDocuments = generateAgentDocuments('https://cv-vipin.vercel.app')
+if (!agentDocuments.index.startsWith(`# ${portfolio.profile.name}`)) {
+  errors.push('llms.txt is missing the required portfolio heading')
+}
+if (!agentDocuments.index.includes('## Principal resources')) {
+  errors.push('llms.txt is missing the principal resources section')
+}
+if (!agentDocuments.full.includes('## Public-content boundaries')) {
+  errors.push('llms-full.txt is missing public-content boundaries')
+}
+if (agentDocuments.full.includes('](/')) {
+  errors.push('llms-full.txt contains a non-canonical relative Markdown link')
+}
+if ('phone' in portfolio.profile) {
+  errors.push('The public profile unexpectedly contains a phone number')
+}
+
+for (const metric of portfolio.metrics) {
+  if (!agentDocuments.full.includes(metric.value) || !agentDocuments.full.includes(metric.label)) {
+    errors.push(`llms-full.txt is missing metric ${metric.id}`)
+  }
+}
+
+for (const experience of portfolio.experience) {
+  if (
+    !agentDocuments.full.includes(experience.role) ||
+    !agentDocuments.full.includes(experience.company)
+  ) {
+    errors.push(`llms-full.txt is missing experience ${experience.id}`)
+  }
+}
+
+for (const group of portfolio.skillGroups) {
+  for (const skill of group.items) {
+    if (!agentDocuments.full.includes(skill.name)) {
+      errors.push(`llms-full.txt is missing skill ${skill.name}`)
+    }
+  }
+}
+
+for (const project of portfolio.projects) {
+  if (!agentDocuments.full.includes(project.title)) {
+    errors.push(`llms-full.txt is missing project ${project.slug}`)
+  }
+}
+
+for (const source of portfolio.sourceSections) {
+  if (!agentDocuments.full.includes(source.id) || !agentDocuments.full.includes(source.content)) {
+    errors.push(`llms-full.txt is missing approved source ${source.id}`)
+  }
+}
 
 for (const metric of portfolio.metrics) {
   if (!sourceIds.has(metric.sourceId)) {

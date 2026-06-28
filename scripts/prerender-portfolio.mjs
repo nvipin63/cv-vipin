@@ -1,6 +1,10 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import path from 'node:path'
-import portfolio from '../src/data/portfolio.json' with { type: 'json' }
+import { generateAgentDocuments } from '../server/portfolio-markdown.mjs'
+
+const require = createRequire(import.meta.url)
+const portfolio = require('../src/data/portfolio.json')
 
 const distDir = path.resolve('dist')
 const baseUrl = (process.env.SITE_URL || 'https://cv-vipin.vercel.app').replace(/\/$/, '')
@@ -22,6 +26,10 @@ function setCanonical(html, url) {
 
 let home = template.replaceAll('https://cv-vipin.vercel.app', baseUrl)
 await writeFile(path.join(distDir, 'index.html'), home)
+
+const agentDocuments = generateAgentDocuments(baseUrl)
+await writeFile(path.join(distDir, 'llms.txt'), agentDocuments.index)
+await writeFile(path.join(distDir, 'llms-full.txt'), agentDocuments.full)
 
 for (const project of portfolio.projects) {
   const url = `${baseUrl}/work/${project.slug}`
@@ -63,6 +71,8 @@ for (const project of portfolio.projects) {
 
 const urls = [
   `<url><loc>${baseUrl}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`,
+  `<url><loc>${baseUrl}/llms.txt</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
+  `<url><loc>${baseUrl}/llms-full.txt</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
   ...portfolio.projects.map(
     (project) =>
       `<url><loc>${baseUrl}/work/${project.slug}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
@@ -72,7 +82,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 await writeFile(path.join(distDir, 'sitemap.xml'), sitemap)
 await writeFile(
   path.join(distDir, 'robots.txt'),
-  `User-agent: *\nAllow: /\n\nSitemap: ${baseUrl}/sitemap.xml\n`,
+  `User-agent: *\nAllow: /\n\n# Agent-readable portfolio: ${baseUrl}/llms.txt\nSitemap: ${baseUrl}/sitemap.xml\n`,
 )
 
 console.log(`Prerendered ${portfolio.projects.length} case-study routes for ${baseUrl}`)

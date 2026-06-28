@@ -139,6 +139,7 @@
       "slug": "engineering-orchestrator",
       "title": "Engineering Orchestrator",
       "category": "Orchestration",
+      "systemType": "agentic-ai",
       "featured": true,
       "oneLine": "A multi-agent operating layer connecting requirements, PLM, design, simulation, and downstream lifecycle workflows.",
       "stack": [
@@ -176,6 +177,7 @@
       "slug": "fmea-agents",
       "title": "FMEA Analysis Agents",
       "category": "Quality",
+      "systemType": "agentic-ai",
       "featured": true,
       "oneLine": "End-to-end agents supporting workflow decomposition, context retrieval, analysis guidance, validation, and structured FMEA outputs.",
       "stack": [
@@ -210,6 +212,7 @@
       "slug": "requirements-agents",
       "title": "Requirements Engineering Agents",
       "category": "Requirements",
+      "systemType": "agentic-ai",
       "featured": true,
       "oneLine": "Agents assisting requirements elicitation, analysis, interpretation, management, and traceability-oriented work.",
       "stack": [
@@ -244,6 +247,7 @@
       "slug": "non-conformity-agents",
       "title": "Non-Conformity Agents",
       "category": "Quality",
+      "systemType": "agentic-ai",
       "featured": false,
       "oneLine": "Quality-workflow agents helping engineers navigate context, evidence, and process-driven next actions.",
       "stack": [
@@ -279,6 +283,7 @@
       "slug": "fem-copilot",
       "title": "FEM Copilot",
       "category": "Simulation",
+      "systemType": "agentic-ai",
       "featured": false,
       "oneLine": "A context-aware assistant for model creation, boundary conditions, material selection, and finite-element analysis steps.",
       "stack": [
@@ -313,6 +318,7 @@
       "slug": "chassis-automation",
       "title": "Chassis Automation Tool",
       "category": "Automation",
+      "systemType": "engineering-automation",
       "featured": false,
       "oneLine": "Interactive and batch automation for CAD organization, mesh creation, seam weld creation, and engineering quality checks.",
       "stack": [
@@ -347,6 +353,7 @@
       "slug": "alloy-wheel-dvp-automation",
       "title": "Alloy Wheel DVP Automation",
       "category": "Automation",
+      "systemType": "engineering-automation",
       "featured": false,
       "oneLine": "An end-to-end wheel-simulation pipeline spanning pre-processing, analysis preparation, post-processing, and automated report generation.",
       "stack": [
@@ -382,6 +389,7 @@
       "slug": "odb-compression",
       "title": "Abaqus ODB Compression Tool",
       "category": "Automation",
+      "systemType": "engineering-automation",
       "featured": true,
       "oneLine": "A standalone Python utility that reduced large Abaqus ODB result files by approximately 90% through selective variable and frame extraction.",
       "stack": [
@@ -416,6 +424,7 @@
       "slug": "google-slides-report-automation",
       "title": "Google Slides Report Automation",
       "category": "Reporting",
+      "systemType": "engineering-automation",
       "featured": false,
       "oneLine": "A form-driven Google Apps Script workflow that assembled engineering reports from uploaded images using a predefined Slides template.",
       "stack": [

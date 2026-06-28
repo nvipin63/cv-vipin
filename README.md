@@ -30,6 +30,15 @@ GROQ_MODEL=qwen/qwen3.6-27b
 
 Generated answers remain bounded to selected source sections. The application does not persist prompts or transcripts.
 
+## Agent-readable portfolio
+
+The development server and production build expose two generated Markdown resources:
+
+- `/llms.txt` — concise portfolio index for AI agents
+- `/llms-full.txt` — complete approved public portfolio
+
+Both files are generated from `src/data/portfolio.json`; they should not be edited separately.
+
 ## Validation and production
 
 ```bash
@@ -38,7 +47,7 @@ npm run lint
 npm run build
 ```
 
-`npm test` validates source references and 58 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates `dist/sitemap.xml`.
+`npm test` validates source references, agent-readable documents, and 58 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates the sitemap and Markdown agent resources.
 
 Set `SITE_URL` during production builds when the deployment domain differs from the documented `https://cv-vipin.vercel.app` fallback.
 

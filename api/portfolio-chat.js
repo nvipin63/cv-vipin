@@ -6,10 +6,6 @@ import {
   selectSources,
 } from '../server/portfolio-grounding.mjs'
 
-export const config = {
-  runtime: 'edge',
-}
-
 const rateBuckets = new Map()
 const RATE_WINDOW_MS = 15 * 60 * 1000
 const RATE_LIMIT = 12
@@ -106,7 +102,7 @@ function streamAnswer(answer, citations) {
   })
 }
 
-export default async function handler(request) {
+async function handlePortfolioRequest(request) {
   if (request.method !== 'POST') return jsonError('Method not allowed', 405)
   if (!(await checkRateLimit(request))) return jsonError('Too many questions. Please try again later.', 429)
 
@@ -167,4 +163,58 @@ export default async function handler(request) {
       'X-Content-Type-Options': 'nosniff',
     },
   })
+}
+
+async function toWebRequest(request) {
+  const headers = new Headers()
+  for (const [name, value] of Object.entries(request.headers || {})) {
+    if (Array.isArray(value)) value.forEach((item) => headers.append(name, item))
+    else if (value !== undefined) headers.set(name, String(value))
+  }
+
+  let body = request.body
+  if (body === undefined) {
+    const chunks = []
+    for await (const chunk of request) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))
+    }
+    body = chunks.length > 0 ? Buffer.concat(chunks) : undefined
+  } else if (typeof body === 'object' && !Buffer.isBuffer(body)) {
+    body = JSON.stringify(body)
+  }
+
+  const host = request.headers?.host || 'localhost'
+  return new Request(`https://${host}${request.url || '/api/portfolio-chat'}`, {
+    method: request.method,
+    headers,
+    body,
+  })
+}
+
+async function sendNodeResponse(response, webResponse) {
+  response.statusCode = webResponse.status
+  webResponse.headers.forEach((value, name) => {
+    if (name !== 'connection') response.setHeader(name, value)
+  })
+
+  if (!webResponse.body) {
+    response.end()
+    return
+  }
+
+  const reader = webResponse.body.getReader()
+  while (true) {
+    const { value, done } = await reader.read()
+    if (done) break
+    response.write(Buffer.from(value))
+  }
+  response.end()
+}
+
+export default async function handler(request, response) {
+  if (!response) return handlePortfolioRequest(request)
+
+  const webRequest = await toWebRequest(request)
+  const webResponse = await handlePortfolioRequest(webRequest)
+  await sendNodeResponse(response, webResponse)
 }

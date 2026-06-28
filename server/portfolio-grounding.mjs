@@ -1,4 +1,7 @@
-import portfolio from '../src/data/portfolio.json' with { type: 'json' }
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
+const portfolio = require('../src/data/portfolio.json')
 
 const injectionPatterns = [
   /ignore (all|any|the|your) (previous|prior|system|developer) instructions/i,
@@ -132,9 +135,26 @@ export function safeFallbackAnswer(question, sources) {
 }
 
 export function buildGroundingPrompt(sources) {
-  return sources
+  const context = sources
     .map((source) => `[${source.id}] ${source.title}\n${source.content}`)
     .join('\n\n')
+
+  if (!sources.some((source) => source.id === 'project-overview')) return context
+
+  const agenticSystems = portfolio.projects
+    .filter((project) => project.systemType === 'agentic-ai')
+    .map((project) => project.title)
+    .join(', ')
+  const automationSystems = portfolio.projects
+    .filter((project) => project.systemType === 'engineering-automation')
+    .map((project) => project.title)
+    .join(', ')
+
+  return `${context}
+
+[project-classification] Explicit project classification
+Agentic AI or GenAI systems: ${agenticSystems}.
+Traditional engineering automation systems: ${automationSystems}.`
 }
 
 export function publicCitations(sources) {
