@@ -1,5 +1,7 @@
 import cases from '../evals/portfolio-chat-cases.json' with { type: 'json' }
 import {
+  buildGroundingPrompt,
+  buildRetrievalQuery,
   isPromptInjection,
   portfolio,
   publicCitations,
@@ -108,11 +110,13 @@ for (const group of portfolio.skillGroups) {
 for (const testCase of cases) {
   const sources = selectSources(testCase.question)
   const selectedIds = sources.map((source) => source.id)
-  const hasExpectedSource = testCase.expectedSources.some((sourceId) => selectedIds.includes(sourceId))
+  const missingSources = testCase.expectedSources.filter(
+    (sourceId) => !selectedIds.includes(sourceId),
+  )
 
-  if (!hasExpectedSource) {
+  if (missingSources.length > 0) {
     errors.push(
-      `${testCase.id}: expected one of [${testCase.expectedSources.join(', ')}], selected [${selectedIds.join(', ')}]`,
+      `${testCase.id}: missing [${missingSources.join(', ')}], selected [${selectedIds.join(', ')}]`,
     )
   }
 
@@ -133,10 +137,38 @@ for (const testCase of cases) {
   if (citations.some((citation) => !citation.id || !citation.title || !citation.href)) {
     errors.push(`${testCase.id}: citation contract is incomplete`)
   }
+
+  const grounding = buildGroundingPrompt(sources)
+  for (const source of sources) {
+    if (!grounding.includes(source.id)) {
+      errors.push(`${testCase.id}: grounding prompt is missing selected source ${source.id}`)
+    }
+  }
 }
 
 if (cases.length < 40) {
   errors.push(`Expected at least 40 assistant evaluations, found ${cases.length}`)
+}
+
+const followUpQuery = buildRetrievalQuery([
+  { role: 'user', content: 'Tell me about the ODB compression tool.' },
+  { role: 'assistant', content: 'It is a simulation-data utility.' },
+  { role: 'user', content: 'What impact did it have?' },
+])
+const followUpSources = selectSources(followUpQuery).map((source) => source.id)
+if (!followUpSources.includes('project-odb-compression')) {
+  errors.push(
+    `multi-turn retrieval: expected project-odb-compression, selected [${followUpSources.join(', ')}]`,
+  )
+}
+
+const topicSwitchQuery = buildRetrievalQuery([
+  { role: 'user', content: 'Tell me about the ODB compression tool.' },
+  { role: 'assistant', content: 'It is a simulation-data utility.' },
+  { role: 'user', content: 'Tell me about FMEA.' },
+])
+if (topicSwitchQuery.includes('ODB compression')) {
+  errors.push('multi-turn retrieval: an explicit new topic was incorrectly treated as a follow-up')
 }
 
 if (errors.length > 0) {

@@ -21,14 +21,14 @@ npm install
 npm run dev
 ```
 
-The portfolio guide works without credentials using approved deterministic answers. To enable generated answers, add:
+The portfolio guide uses keyless local hybrid retrieval: BM25-style ranking, concept expansion, and character-ngram similarity over the canonical CV data. To enable generated answers, add:
 
 ```bash
 GROQ_API_KEY=...
 GROQ_MODEL=qwen/qwen3.6-27b
 ```
 
-Generated answers remain bounded to selected source sections. The application does not persist prompts or transcripts.
+No embedding API or external vector database is required for this CV-sized corpus. Generated answers remain bounded to selected, citation-backed source sections. The application does not persist prompts or transcripts.
 
 ## Agent-readable portfolio
 
@@ -47,7 +47,7 @@ npm run lint
 npm run build
 ```
 
-`npm test` validates source references, agent-readable documents, and 58 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates the sitemap and Markdown agent resources.
+`npm test` validates source references, agent-readable documents, strict source recall across 68 grounding, paraphrase, unsupported-question, and prompt-injection cases, plus multi-turn retrieval. `npm run build` prerenders every `/work/:slug` route and creates the sitemap and Markdown agent resources.
 
 Set `SITE_URL` during production builds when the deployment domain differs from the documented `https://cv-vipin.vercel.app` fallback.
 

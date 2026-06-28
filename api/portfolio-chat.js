@@ -1,9 +1,10 @@
 import {
+  buildRetrievalQuery,
   buildGroundingPrompt,
   isPromptInjection,
   publicCitations,
+  retrieveSources,
   safeFallbackAnswer,
-  selectSources,
 } from '../server/portfolio-grounding.mjs'
 
 const rateBuckets = new Map()
@@ -137,13 +138,14 @@ async function handlePortfolioRequest(request) {
   if (question.length > 500) return jsonError('Question is too long', 400)
   if (userMessages.length > 5) return jsonError('Question limit reached', 429)
 
-  const sources = selectSources(question, currentPath)
-  const citations = publicCitations(sources)
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 12_000)
 
   let answer
+  let sources = []
   try {
+    const retrievalQuery = buildRetrievalQuery(cleanMessages)
+    sources = await retrieveSources(retrievalQuery, currentPath, controller.signal)
     answer = isPromptInjection(question)
       ? safeFallbackAnswer(question, sources)
       : await generateModelAnswer(cleanMessages, sources, controller.signal)
@@ -154,6 +156,7 @@ async function handlePortfolioRequest(request) {
     clearTimeout(timeout)
   }
 
+  const citations = publicCitations(sources)
   return new Response(streamAnswer(answer, citations), {
     status: 200,
     headers: {

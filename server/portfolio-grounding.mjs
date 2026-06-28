@@ -12,46 +12,325 @@ const injectionPatterns = [
 ]
 
 const stopWords = new Set([
+  'a',
   'about',
   'after',
   'also',
+  'an',
   'and',
   'are',
+  'as',
+  'at',
+  'be',
   'can',
+  'did',
+  'do',
   'does',
   'for',
   'from',
   'has',
   'have',
+  'he',
   'him',
   'his',
   'how',
+  'i',
+  'in',
   'into',
   'is',
+  'it',
   'me',
   'of',
   'on',
   'the',
   'to',
   'vipin',
+  'was',
   'what',
+  'which',
   'why',
   'with',
 ])
 
-function tokenize(value) {
-  return value
+const termExpansions = {
+  ai: ['agentic', 'genai', 'llm'],
+  architect: ['architecture', 'orchestrator'],
+  background: ['profile', 'career', 'experience'],
+  bio: ['profile', 'career', 'experience'],
+  built: ['developed', 'created', 'delivered', 'project'],
+  cloud: ['azure', 'gcp'],
+  companies: ['career', 'employers', 'experience'],
+  company: ['career', 'employer', 'experience'],
+  decision: ['decisions', 'tradeoffs', 'approach'],
+  employer: ['career', 'companies', 'experience'],
+  expertise: ['skills', 'capabilities', 'experience'],
+  framework: ['langchain', 'langgraph', 'deepagents', 'adk'],
+  history: ['career', 'experience', 'progression'],
+  journey: ['career', 'experience', 'progression'],
+  quality: ['fmea', 'nonconformity', 'validation'],
+  report: ['reporting', 'hyperview', 'slides'],
+  responsibility: ['ownership', 'role'],
+  role: ['ownership', 'responsibilities'],
+  skill: ['capabilities', 'expertise', 'technology'],
+  suitable: ['profile', 'skills', 'experience', 'projects'],
+  tool: ['technology', 'frameworks', 'stack'],
+  tradeoff: ['decisions', 'approach'],
+}
+
+function stem(token) {
+  if (token.length > 5 && token.endsWith('ies')) return `${token.slice(0, -3)}y`
+  if (token.length > 5 && token.endsWith('ing')) return token.slice(0, -3)
+  if (token.length > 4 && token.endsWith('ed')) return token.slice(0, -2)
+  if (token.length > 4 && token.endsWith('es')) return token.slice(0, -2)
+  if (token.length > 3 && token.endsWith('s')) return token.slice(0, -1)
+  return token
+}
+
+function tokenize(value, expand = false) {
+  const base = value
     .toLowerCase()
-    .replace(/[^a-z0-9+#.-]+/g, ' ')
+    .replace(/non[\s-]?conformit(?:y|ies)/g, ' nonconformity ')
+    .replace(/deep[\s-]?agents?/g, ' deepagents ')
+    .replace(/model context protocol/g, ' mcp ')
+    .replace(/google agent development kit/g, ' adk ')
+    .replace(/[^a-z0-9+#%.]+/g, ' ')
     .split(/\s+/)
     .filter((token) => token.length > 1 && !stopWords.has(token))
+    .map(stem)
+
+  if (!expand) return base
+
+  const expanded = [...base]
+  for (const token of base) {
+    for (const related of termExpansions[token] || []) expanded.push(stem(related))
+  }
+  return expanded
 }
 
-export function isPromptInjection(value) {
-  return injectionPatterns.some((pattern) => pattern.test(value))
+function characterNgrams(value) {
+  const normalized = ` ${value.toLowerCase().replace(/[^a-z0-9+#%]+/g, ' ').trim()} `
+  const frequencies = new Map()
+  for (let index = 0; index <= normalized.length - 3; index += 1) {
+    const ngram = normalized.slice(index, index + 3)
+    frequencies.set(ngram, (frequencies.get(ngram) || 0) + 1)
+  }
+  return frequencies
 }
 
-export function selectSources(question, currentPath = '/') {
+function sparseCosineSimilarity(left, right) {
+  let dot = 0
+  let leftMagnitude = 0
+  let rightMagnitude = 0
+  for (const value of left.values()) leftMagnitude += value * value
+  for (const value of right.values()) rightMagnitude += value * value
+  for (const [key, value] of left) dot += value * (right.get(key) || 0)
+  return dot / (Math.sqrt(leftMagnitude) * Math.sqrt(rightMagnitude) || 1)
+}
+
+function flattenProject(project) {
+  return [
+    project.title,
+    project.category,
+    project.systemType === 'agentic-ai' ? 'Agentic AI GenAI system' : 'engineering automation',
+    project.oneLine,
+    `Technology: ${project.stack.join(', ')}`,
+    `Problem: ${project.problem}`,
+    `Ownership: ${project.ownership}`,
+    `Approach: ${project.approach.join(' ')}`,
+    `Decisions and trade-offs: ${project.decisions.join(' ')}`,
+    `Impact: ${project.impact.join(' ')}`,
+    `Lessons learned: ${project.lessons.join(' ')}`,
+    `Public-content boundary: ${project.confidentiality}`,
+  ].join('\n')
+}
+
+function flattenExperience(role) {
+  return [
+    `${role.role} at ${role.company}, ${role.period}, ${role.location}.`,
+    `${role.phase}. ${role.summary}`,
+    role.highlights.join(' '),
+    `Outcome: ${role.outcome}`,
+  ].join(' ')
+}
+
+function sourceDetails(source) {
+  if (source.id === 'profile-summary') {
+    return [
+      portfolio.profile.headline,
+      portfolio.profile.supportingTitle,
+      portfolio.profile.summary,
+      portfolio.profile.about,
+      `Location: ${portfolio.profile.location}`,
+    ].join('\n')
+  }
+
+  if (source.id === 'skills-evidence') {
+    return portfolio.skillGroups
+      .map((group) => `${group.title}: ${group.items.map((item) => item.name).join(', ')}`)
+      .join('\n')
+  }
+
+  if (source.id === 'career-history') {
+    return portfolio.experience.map(flattenExperience).join('\n')
+  }
+
+  if (source.id === 'project-overview') {
+    return portfolio.projects
+      .map(
+        (project) =>
+          `${project.title} (${project.systemType === 'agentic-ai' ? 'Agentic AI or GenAI' : 'traditional engineering automation'}): ${project.oneLine}`,
+      )
+      .join('\n')
+  }
+
+  if (source.id === 'contact') {
+    return `Location: ${portfolio.profile.location}. Email: ${portfolio.profile.email}. LinkedIn: ${portfolio.profile.linkedin}.`
+  }
+
+  const project = portfolio.projects.find((item) => item.sourceId === source.id)
+  return project ? flattenProject(project) : ''
+}
+
+const sourceDocuments = portfolio.sourceSections.map((source, index) => {
+  const details = sourceDetails(source)
+  const searchText = `${source.title}\n${source.keywords.join(' ')}\n${source.content}\n${details}`
+  const tokens = tokenize(searchText)
+  const ngrams = characterNgrams(
+    `${source.title}\n${source.keywords.join(' ')}\n${source.content}`,
+  )
+  const frequencies = new Map()
+  for (const token of tokens) frequencies.set(token, (frequencies.get(token) || 0) + 1)
+  return { source, details, searchText, tokens, ngrams, frequencies, index }
+})
+
+const averageDocumentLength =
+  sourceDocuments.reduce((total, document) => total + document.tokens.length, 0) /
+  sourceDocuments.length
+const documentFrequency = new Map()
+for (const document of sourceDocuments) {
+  for (const token of new Set(document.tokens)) {
+    documentFrequency.set(token, (documentFrequency.get(token) || 0) + 1)
+  }
+}
+
+function bm25Score(queryTokens, document) {
+  let score = 0
+  const k1 = 1.4
+  const b = 0.72
+
+  for (const token of queryTokens) {
+    const frequency = document.frequencies.get(token) || 0
+    if (!frequency) continue
+    const containingDocuments = documentFrequency.get(token) || 0
+    const idf = Math.log(
+      1 + (sourceDocuments.length - containingDocuments + 0.5) / (containingDocuments + 0.5),
+    )
+    const denominator =
+      frequency + k1 * (1 - b + b * (document.tokens.length / averageDocumentLength))
+    score += idf * ((frequency * (k1 + 1)) / denominator)
+  }
+
+  return score
+}
+
+function intentBoost(question, sourceId) {
+  const normalized = question.toLowerCase()
+  let score = 0
+
+  if (/\b(background|bio|professional journey|career journey)\b/.test(normalized)) {
+    if (sourceId === 'profile-summary' || sourceId === 'career-history') score += 5
+  }
+  if (/\bwho is (vipin|he)\b/.test(normalized) && sourceId === 'profile-summary') score += 8
+  if (/\b(compan(?:y|ies)|employers?|career|before|previously|progress(?:ion|ed)?)\b/.test(normalized)) {
+    if (sourceId === 'career-history') score += 6
+  }
+  if (/\b(skill|capabilit|expertise|tech(?:nology)? stack|framework|platform|tools?)\b/.test(normalized)) {
+    if (sourceId === 'skills-evidence') score += 5
+  }
+  if (/\b(suited?|suitable|fit|qualified)\b/.test(normalized)) {
+    if (['profile-summary', 'skills-evidence', 'project-overview'].includes(sourceId)) score += 4
+    if (sourceId === 'project-engineering-orchestrator') score += 3
+  }
+  if (/\b(where|location|contact|email|linkedin|reach|hire)\b/.test(normalized)) {
+    if (sourceId === 'contact') score += 6
+    if (sourceId === 'profile-summary') score += 2
+  }
+  if (/\b(which|what).*\b(projects?|systems?|work)\b/.test(normalized)) {
+    if (sourceId === 'project-overview') score += 4
+  }
+  if (/\bquality\b/.test(normalized)) {
+    if (['project-fmea-agents', 'project-non-conformity-agents'].includes(sourceId)) score += 6
+  }
+  if (/\bengineering domain|domain experience\b/.test(normalized)) {
+    if (['career-history', 'profile-summary', 'skills-evidence'].includes(sourceId)) score += 8
+  }
+  if (/\bcae automation\b/.test(normalized) && sourceId === 'career-history') score += 10
+  if (/\bvector databases?\b/.test(normalized)) {
+    if (
+      [
+        'skills-evidence',
+        'project-engineering-orchestrator',
+        'project-non-conformity-agents',
+      ].includes(sourceId)
+    ) {
+      score += 8
+    }
+  }
+
+  return score
+}
+
+function rankSources(question, currentPath = '/') {
+  const queryTokens = tokenize(question, true)
+  const queryNgrams = characterNgrams(question)
+  const normalized = question.toLowerCase()
+
+  return sourceDocuments
+    .map((document) => {
+      const keywordText = document.source.keywords.join(' ').toLowerCase()
+      const titleText = document.source.title.toLowerCase()
+      let score = bm25Score(queryTokens, document)
+
+      for (const keyword of document.source.keywords) {
+        if (normalized.includes(keyword.toLowerCase())) score += 5
+      }
+      for (const token of new Set(queryTokens)) {
+        if (token.length > 2 && tokenize(keywordText).includes(token)) score += 1.8
+        if (token.length > 2 && tokenize(titleText).includes(token)) score += 1.4
+      }
+
+      const fuzzyScore = sparseCosineSimilarity(queryNgrams, document.ngrams)
+      score += fuzzyScore * 4
+      score += intentBoost(question, document.source.id)
+      if (document.source.href === currentPath) score += 1.5
+      return { ...document, fuzzyScore, score }
+    })
+    .sort((left, right) => right.score - left.score || left.index - right.index)
+}
+
+function selectRankedSources(ranked, question) {
+  const topScore = ranked[0]?.score || 0
+  if (topScore <= 0) {
+    return portfolio.sourceSections.filter((source) =>
+      ['profile-summary', 'project-overview', 'contact'].includes(source.id),
+    )
+  }
+
+  const normalized = question.toLowerCase()
+  const broadOrComparative =
+    /\b(compare|versus|vs\.?|which projects?|what projects?|systems?|background|journey|suited?|suitable|domain experience|vector databases?)\b/.test(
+      normalized,
+    )
+  const limit = broadOrComparative ? 5 : 4
+  const minimumScore = Math.max(0.75, topScore * (broadOrComparative ? 0.25 : 0.4))
+
+  return ranked
+    .filter((item) => item.score >= minimumScore)
+    .slice(0, limit)
+    .map((item) => item.source)
+}
+
+function fixedPolicySources(question) {
   if (isPromptInjection(question)) {
     return portfolio.sourceSections.filter((source) =>
       ['profile-summary', 'project-overview', 'contact'].includes(source.id),
@@ -68,52 +347,55 @@ export function selectSources(question, currentPath = '/') {
     )
   }
 
-  if (
-    /\b(agentic ai|genai|ai)\b/i.test(question) &&
-    /\b(systems?|projects?)\b/i.test(question) &&
-    /\b(build|built|create|created|develop|developed|work)\b/i.test(question)
-  ) {
-    return portfolio.sourceSections.filter((source) => source.id === 'project-overview')
-  }
+  return null
+}
 
-  if (/\b(vector databases?|databases?)\b/i.test(question)) {
-    const sourceIds = /\bvector databases?\b/i.test(question)
-      ? ['skills-evidence', 'project-engineering-orchestrator', 'project-non-conformity-agents']
-      : ['skills-evidence']
-    return portfolio.sourceSections.filter((source) => sourceIds.includes(source.id))
-  }
+export function isPromptInjection(value) {
+  return injectionPatterns.some((pattern) => pattern.test(value))
+}
 
-  const tokens = tokenize(question)
+export function buildRetrievalQuery(messages) {
+  const userMessages = messages
+    .filter((message) => message?.role === 'user' && typeof message.content === 'string')
+    .map((message) => message.content.trim())
+    .filter(Boolean)
 
-  const ranked = portfolio.sourceSections
-    .map((source, sourceIndex) => {
-      const keywordText = source.keywords.join(' ').toLowerCase()
-      const contentText = `${source.title} ${source.content}`.toLowerCase()
-      let score = 0
+  const question = userMessages.at(-1) || ''
+  const previous = userMessages.at(-2)
+  if (!previous) return question
 
-      for (const token of tokens) {
-        if (source.keywords.some((keyword) => keyword.toLowerCase() === token)) score += 7
-        else if (keywordText.includes(token)) score += 4
-        if (source.title.toLowerCase().includes(token)) score += 3
-        if (contentText.includes(token)) score += 1
-      }
-
-      if (source.href === currentPath) score += 2
-      return { source, score, sourceIndex }
-    })
-    .sort((left, right) => right.score - left.score || left.sourceIndex - right.sourceIndex)
-
-  const topScore = ranked[0]?.score || 0
-  const minimumScore = Math.max(1, topScore * 0.35)
-  const matched = ranked
-    .filter((item) => item.score >= minimumScore)
-    .slice(0, 3)
-    .map((item) => item.source)
-  if (matched.length > 0) return matched
-
-  return portfolio.sourceSections.filter((source) =>
-    ['profile-summary', 'project-overview', 'contact'].includes(source.id),
+  const normalizedQuestion = question.toLowerCase()
+  const hasStandaloneTopic = sourceDocuments.some(
+    ({ source }) =>
+      normalizedQuestion.includes(source.title.toLowerCase()) ||
+      source.keywords.some(
+        (keyword) => keyword.length >= 3 && normalizedQuestion.includes(keyword.toLowerCase()),
+      ),
   )
+  const isFollowUp =
+    !hasStandaloneTopic &&
+    (question.split(/\s+/).length <= 8 ||
+      /^(and|also|but|what about|how about|why|where|when|who)\b/i.test(question) ||
+      /\b(it|its|that|this|they|their|those|he|his)\b/i.test(question))
+
+  return isFollowUp ? `${previous}\nFollow-up: ${question}` : question
+}
+
+export function selectSources(question, currentPath = '/') {
+  const fixedSources = fixedPolicySources(question)
+  if (fixedSources) return fixedSources
+  return selectRankedSources(rankSources(question, currentPath), question)
+}
+
+export function retrievalDiagnostics(question, currentPath = '/') {
+  return rankSources(question, currentPath).map(({ source, score }) => ({
+    sourceId: source.id,
+    score: Number(score.toFixed(3)),
+  }))
+}
+
+export function retrieveSources(question, currentPath = '/') {
+  return selectSources(question, currentPath)
 }
 
 export function safeFallbackAnswer(question, sources) {
@@ -136,7 +418,11 @@ export function safeFallbackAnswer(question, sources) {
 
 export function buildGroundingPrompt(sources) {
   const context = sources
-    .map((source) => `[${source.id}] ${source.title}\n${source.content}`)
+    .map((source) => {
+      const document = sourceDocuments.find((item) => item.source.id === source.id)
+      const details = document?.details ? `\n${document.details}` : ''
+      return `[${source.id}] ${source.title}\n${source.content}${details}`
+    })
     .join('\n\n')
 
   if (!sources.some((source) => source.id === 'project-overview')) return context

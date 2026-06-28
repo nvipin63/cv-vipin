@@ -353,5 +353,65 @@
     "question": "How confident is he in databases?",
     "expectedSources": ["skills-evidence"],
     "forbiddenTerms": ["expert", "advanced", "intermediate", "beginner"]
+  },
+  {
+    "id": "paraphrase-01",
+    "category": "retrieval",
+    "question": "Walk me through his professional journey.",
+    "expectedSources": ["profile-summary", "career-history"]
+  },
+  {
+    "id": "paraphrase-02",
+    "category": "retrieval",
+    "question": "What trade-offs did he make in the Engineering Orchestrator?",
+    "expectedSources": ["project-engineering-orchestrator"]
+  },
+  {
+    "id": "paraphrase-03",
+    "category": "retrieval",
+    "question": "How does his quality AI work keep humans accountable?",
+    "expectedSources": ["project-fmea-agents", "project-non-conformity-agents"]
+  },
+  {
+    "id": "paraphrase-04",
+    "category": "retrieval",
+    "question": "What did he own at Valeo?",
+    "expectedSources": ["career-history"]
+  },
+  {
+    "id": "paraphrase-05",
+    "category": "retrieval",
+    "question": "How does the wheel workflow minimize input while preserving validation?",
+    "expectedSources": ["project-alloy-wheel-dvp-automation"]
+  },
+  {
+    "id": "paraphrase-06",
+    "category": "retrieval",
+    "question": "Which project selectively extracts result variables and frames?",
+    "expectedSources": ["project-odb-compression"]
+  },
+  {
+    "id": "paraphrase-07",
+    "category": "retrieval",
+    "question": "What lessons did he learn from building the FEM copilot?",
+    "expectedSources": ["project-fem-copilot"]
+  },
+  {
+    "id": "paraphrase-08",
+    "category": "retrieval",
+    "question": "What can he do with cloud platforms and coding assistants?",
+    "expectedSources": ["skills-evidence"]
+  },
+  {
+    "id": "paraphrase-09",
+    "category": "retrieval",
+    "question": "Compare his graph-based and deep-agent work.",
+    "expectedSources": ["project-fmea-agents", "project-requirements-agents"]
+  },
+  {
+    "id": "paraphrase-10",
+    "category": "retrieval",
+    "question": "Does he have experience joining engineering tools to trusted knowledge?",
+    "expectedSources": ["project-engineering-orchestrator"]
   }
 ]
