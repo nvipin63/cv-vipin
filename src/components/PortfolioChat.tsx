@@ -20,7 +20,7 @@ interface PortfolioChatProps {
 }
 
 const suggestions = [
-  'How has Vipin applied LangGraph?',
+  'What Agentic AI systems has Vipin built?',
   'What engineering domain experience does he bring?',
   'Why is he suited to an Agentic AI role?',
 ]

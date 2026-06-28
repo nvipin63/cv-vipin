@@ -49,6 +49,12 @@ export function isPromptInjection(value) {
 }
 
 export function selectSources(question, currentPath = '/') {
+  if (isPromptInjection(question)) {
+    return portfolio.sourceSections.filter((source) =>
+      ['profile-summary', 'project-overview', 'contact'].includes(source.id),
+    )
+  }
+
   if (
     /\b(salary|compensation|confidential|proprietary|secret|client names?|exact internal|internal metrics?)\b/i.test(
       question,
@@ -57,6 +63,21 @@ export function selectSources(question, currentPath = '/') {
     return portfolio.sourceSections.filter((source) =>
       ['profile-summary', 'project-overview', 'contact'].includes(source.id),
     )
+  }
+
+  if (
+    /\b(agentic ai|genai|ai)\b/i.test(question) &&
+    /\b(systems?|projects?)\b/i.test(question) &&
+    /\b(build|built|create|created|develop|developed|work)\b/i.test(question)
+  ) {
+    return portfolio.sourceSections.filter((source) => source.id === 'project-overview')
+  }
+
+  if (/\b(vector databases?|databases?)\b/i.test(question)) {
+    const sourceIds = /\bvector databases?\b/i.test(question)
+      ? ['skills-evidence', 'project-engineering-orchestrator', 'project-non-conformity-agents']
+      : ['skills-evidence']
+    return portfolio.sourceSections.filter((source) => sourceIds.includes(source.id))
   }
 
   const tokens = tokenize(question)

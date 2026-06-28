@@ -308,5 +308,50 @@
     "category": "project",
     "question": "How did the form-driven report automation work?",
     "expectedSources": ["project-google-slides-report-automation"]
+  },
+  {
+    "id": "skills-01",
+    "category": "skills",
+    "question": "What are his skills?",
+    "expectedSources": ["skills-evidence"]
+  },
+  {
+    "id": "skills-02",
+    "category": "skills",
+    "question": "Which AI frameworks and tools does Vipin use?",
+    "expectedSources": ["skills-evidence"]
+  },
+  {
+    "id": "skills-03",
+    "category": "skills",
+    "question": "What cloud and AI development platforms does he know?",
+    "expectedSources": ["skills-evidence"]
+  },
+  {
+    "id": "agentic-systems-01",
+    "category": "project",
+    "question": "What Agentic AI systems has Vipin built?",
+    "expectedSources": ["project-overview"]
+  },
+  {
+    "id": "databases-01",
+    "category": "skills",
+    "question": "Has Vipin worked with databases?",
+    "expectedSources": ["skills-evidence"],
+    "forbiddenTerms": ["PostgreSQL", "MongoDB", "Pinecone", "Azure AI Search"]
+  },
+  {
+    "id": "databases-02",
+    "category": "skills",
+    "question": "How has Vipin used vector databases?",
+    "expectedSources": ["skills-evidence", "project-engineering-orchestrator", "project-non-conformity-agents"],
+    "forbiddenTerms": ["PostgreSQL", "MongoDB", "Pinecone", "Azure AI Search"]
+  },
+  {
+    "id": "databases-03",
+    "category": "skills",
+    "question": "How confident is he in databases?",
+    "expectedSources": ["skills-evidence"],
+    "forbiddenTerms": ["expert", "advanced", "intermediate", "beginner"]
   }
 ]

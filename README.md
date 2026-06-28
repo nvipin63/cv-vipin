@@ -24,8 +24,8 @@ npm run dev
 The portfolio guide works without credentials using approved deterministic answers. To enable generated answers, add:
 
 ```bash
-ANTHROPIC_API_KEY=...
-ANTHROPIC_MODEL=claude-haiku-4-5-20251001
+GROQ_API_KEY=...
+GROQ_MODEL=qwen/qwen3.6-27b
 ```
 
 Generated answers remain bounded to selected source sections. The application does not persist prompts or transcripts.
@@ -38,7 +38,7 @@ npm run lint
 npm run build
 ```
 
-`npm test` validates source references and 43 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates `dist/sitemap.xml`.
+`npm test` validates source references and 58 grounding, unsupported-question, and prompt-injection cases. `npm run build` prerenders every `/work/:slug` route and creates `dist/sitemap.xml`.
 
 Set `SITE_URL` during production builds when the deployment domain differs from the documented `https://cv-vipin.vercel.app` fallback.
 

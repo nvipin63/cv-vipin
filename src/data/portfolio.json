@@ -146,6 +146,7 @@
         "LangChain",
         "Azure",
         "RAG",
+        "Vector databases",
         "MCP"
       ],
       "problem": "Engineering work spans specialized tools, fragmented knowledge, and lifecycle hand-offs. A useful AI layer has to coordinate these systems without hiding ownership or process constraints.",
@@ -248,6 +249,7 @@
       "stack": [
         "GenAI",
         "RAG",
+        "Vector databases",
         "Quality workflows"
       ],
       "problem": "Non-conformity work requires engineers to connect issue context, supporting evidence, and prescribed process steps across fragmented information.",
@@ -499,6 +501,13 @@
           ]
         },
         {
+          "name": "Vector databases for RAG",
+          "projectSlugs": [
+            "engineering-orchestrator",
+            "non-conformity-agents"
+          ]
+        },
+        {
           "name": "Prompt and workflow design",
           "projectSlugs": [
             "fmea-agents",
@@ -647,7 +656,31 @@
         "agentic ai",
         "solution architect"
       ],
-      "content": "I am an Agentic AI Engineer based in Munich with 10+ years across engineering automation and digital transformation. I combine engineering-domain knowledge with Python, LangChain, LangGraph, Deep Agents, Google ADK, LLM orchestration, RAG, MCP-enabled integration, Azure AI Foundry, Azure DevOps, Azure Portal, GCP, Cursor AI, OpenAI Codex, Claude Code, agile delivery, and stakeholder alignment."
+      "content": "I am an Agentic AI Engineer based in Munich with 10+ years across engineering automation and digital transformation. I combine engineering-domain knowledge with Python, LangChain, LangGraph, Deep Agents, Google ADK, LLM orchestration, RAG, vector databases for embedding storage and similarity search, MCP-enabled integration, Azure AI Foundry, Azure DevOps, Azure Portal, GCP, Cursor AI, OpenAI Codex, Claude Code, agile delivery, and stakeholder alignment."
+    },
+    {
+      "id": "skills-evidence",
+      "title": "Skills and capabilities",
+      "href": "/#skills",
+      "keywords": [
+        "skills",
+        "skill",
+        "capabilities",
+        "expertise",
+        "technology",
+        "technologies",
+        "tech stack",
+        "tools",
+        "frameworks",
+        "platforms",
+        "database",
+        "databases",
+        "vector database",
+        "vector databases",
+        "embedding storage",
+        "similarity search"
+      ],
+      "content": "I have worked with vector databases in RAG implementations, using them for embedding storage and similarity search. My other Agentic AI skills include multi-agent orchestration, LangChain, LangGraph, Deep Agents, Google ADK, Model Context Protocol (MCP), LLM orchestration, prompt and workflow design, AI copilots, and human review patterns. My cloud and delivery skills include Azure AI Foundry, Azure DevOps, Azure Portal, and Google Cloud Platform (GCP). I use Python and Tcl/Tk for engineering automation, and Cursor AI, OpenAI Codex, and Claude Code for AI-assisted development. My engineering-domain capabilities cover requirements engineering, PLM, FMEA and quality, CAE, FEM, simulation automation, and engineering reporting. The public portfolio does not assign a proficiency or confidence level to database skills and does not identify a specific vector database product."
     },
     {
       "id": "career-history",
@@ -673,9 +706,13 @@
         "projects",
         "systems",
         "portfolio",
-        "work"
+        "work",
+        "agentic ai systems",
+        "genai systems",
+        "ai projects",
+        "automation projects"
       ],
-      "content": "The portfolio includes nine systems spanning engineering orchestration, FMEA, requirements, non-conformity, FEM copilots, CAE automation, simulation-data compression, and report automation."
+      "content": "The portfolio contains five Agentic AI or GenAI systems: the Engineering Orchestrator coordinates agents across engineering lifecycle workflows; FMEA Analysis Agents structure quality analysis and expert review; Requirements Engineering Agents support elicitation, analysis, management, and traceability; Non-Conformity Agents retrieve quality evidence and guide process-driven next actions; and the FEM Copilot provides context-aware simulation guidance. The portfolio also contains four traditional engineering automation systems—Chassis Automation, Alloy Wheel DVP Automation, Abaqus ODB Compression, and Google Slides Report Automation—which must not be described as Agentic AI systems."
     },
     {
       "id": "project-engineering-orchestrator",
@@ -692,7 +729,7 @@
         "architecture",
         "tools"
       ],
-      "content": "I architect an Engineering Orchestrator connecting requirements, PLM, design, simulation, and lifecycle activities through bounded agents, explicit tool access, knowledge retrieval, validation, and visible human decision points."
+      "content": "I architect an Engineering Orchestrator connecting requirements, PLM, design, simulation, and lifecycle activities through bounded agents, explicit tool access, and RAG backed by vector databases for embedding storage and similarity search, with validation and visible human decision points."
     },
     {
       "id": "project-fmea-agents",
@@ -706,7 +743,7 @@
         "validation",
         "failure"
       ],
-      "content": "I serve as development lead for FMEA analysis agents. The workflow separates context retrieval, analysis guidance, validation, structured outputs, and expert review using inspectable graph orchestration."
+      "content": "I serve as development lead for FMEA analysis agents using LangGraph for inspectable graph orchestration. The workflow separates context retrieval, analysis guidance, validation, structured outputs, and expert review."
     },
     {
       "id": "project-requirements-agents",
@@ -732,7 +769,7 @@
         "evidence",
         "rag"
       ],
-      "content": "I built agents that retrieve quality context, organize supporting evidence, and guide process-driven next actions while leaving disposition and approval with accountable engineers."
+      "content": "I built agents that use RAG with vector-database retrieval to find quality context, organize supporting evidence, and guide process-driven next actions while leaving disposition and approval with accountable engineers."
     },
     {
       "id": "project-fem-copilot",

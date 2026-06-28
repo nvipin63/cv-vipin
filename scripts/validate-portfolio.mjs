@@ -50,6 +50,15 @@ for (const testCase of cases) {
     errors.push(`${testCase.id}: injection pattern was not detected`)
   }
 
+  if (Array.isArray(testCase.forbiddenTerms)) {
+    const selectedContent = sources.map((source) => source.content).join(' ').toLowerCase()
+    for (const term of testCase.forbiddenTerms) {
+      if (selectedContent.includes(term.toLowerCase())) {
+        errors.push(`${testCase.id}: selected context contains forbidden term "${term}"`)
+      }
+    }
+  }
+
   const citations = publicCitations(sources)
   if (citations.some((citation) => !citation.id || !citation.title || !citation.href)) {
     errors.push(`${testCase.id}: citation contract is incomplete`)

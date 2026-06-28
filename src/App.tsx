@@ -448,7 +448,7 @@ function QuickScan({ onDeep }: { onDeep: () => void }) {
     'LangGraph',
     'Deep Agents',
     'Google ADK',
-    'RAG',
+    'RAG + vector databases',
     'MCP',
     'LLMs',
     'Azure AI Foundry',
@@ -651,7 +651,7 @@ function HomePage({
           >
             <ModeSwitchGlow sequence={modeSwitchSequence} className="-inset-10" />
             <div className="absolute inset-0 rounded-[3rem] bg-gradient-theme opacity-30 blur-3xl" />
-            <figure className="relative h-72 w-56 overflow-hidden rounded-[2.5rem] border border-white/15 bg-card shadow-2xl sm:h-80 sm:w-60">
+            <figure className="relative aspect-square w-48 overflow-hidden rounded-[2rem] border border-white/15 bg-card shadow-2xl sm:w-52">
               <img
                 src="/vipin-profile.jpg"
                 alt="Portrait of Vipin Neekamparambath"
@@ -664,9 +664,6 @@ function HomePage({
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent px-6 pb-6 pt-16 text-white">
                 <figcaption className="font-display text-lg font-semibold">Vipin Neekamparambath</figcaption>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-cyan-200">
-                  Engineering → Agents
-                </p>
               </div>
             </figure>
           </motion.aside>
