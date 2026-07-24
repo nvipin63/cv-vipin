@@ -25,7 +25,6 @@ import {
   Menu,
   Moon,
   Search,
-  Sparkles,
   Sun,
   X,
   Zap,
@@ -111,7 +110,7 @@ function ViewModeToggle({
       className={`inline-flex rounded-full border border-border bg-card p-1 ${compact ? 'text-xs' : 'text-sm'}`}
       aria-label="Portfolio detail level"
     >
-      {(['deep', 'overview'] as const).map((value) => (
+      {(['overview', 'deep'] as const).map((value) => (
         <button
           key={value}
           type="button"
@@ -125,7 +124,7 @@ function ViewModeToggle({
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          {value === 'overview' ? '30-second scan' : 'Technical depth'}
+          {value === 'overview' ? '30-second scan' : 'Full portfolio'}
         </button>
       ))}
     </div>
@@ -137,14 +136,12 @@ function TopNav({
   onThemeChange,
   mode,
   onModeChange,
-  onAsk,
   projectPage,
 }: {
   dark: boolean
   onThemeChange: () => void
   mode: ViewMode
   onModeChange: (mode: ViewMode) => void
-  onAsk: () => void
   projectPage: boolean
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -163,7 +160,7 @@ function TopNav({
       : detailedLinks
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl" aria-label="Primary navigation">
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl" aria-label="Primary navigation">
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6">
         <div className="flex items-center gap-5">
           <a href="/" className="font-display text-lg font-bold tracking-tight" aria-label="Vipin Neekamparambath, home">
@@ -183,15 +180,6 @@ function TopNav({
               {label}
             </a>
           ))}
-          <button
-            id="ask-cv-trigger"
-            type="button"
-            onClick={onAsk}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-2 font-medium text-primary hover:border-primary/50"
-          >
-            <Bot className="h-4 w-4" />
-            Ask the CV
-          </button>
           <button
             type="button"
             onClick={onThemeChange}
@@ -238,18 +226,6 @@ function TopNav({
                 {label}
               </a>
             ))}
-            <button
-              id="ask-cv-trigger-mobile"
-              type="button"
-              onClick={() => {
-                setMenuOpen(false)
-                onAsk()
-              }}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-primary-foreground"
-            >
-              <Bot className="h-4 w-4" />
-              Ask the CV
-            </button>
           </div>
         </div>
       )}
@@ -545,12 +521,10 @@ function HomePage({
   mode,
   modeSwitchSequence,
   onModeChange,
-  onAsk,
 }: {
   mode: ViewMode
   modeSwitchSequence: number
   onModeChange: (mode: ViewMode) => void
-  onAsk: () => void
 }) {
   const profile = portfolio.profile
   const heroCopy =
@@ -559,13 +533,12 @@ function HomePage({
           lead: 'Agentic AI, grounded in',
           emphasis: 'real engineering work.',
           summary:
-            'A 30-second view of how I use multi-agent orchestration, LangGraph, Deep Agents, RAG and MCP across PLM, requirements, quality and simulation.',
+            'I architect multi-agent systems that combine enterprise knowledge, engineering tools, validation, and human review across PLM, requirements, quality, and simulation.',
         }
       : {
           lead: 'Turning complex engineering workflows into',
           emphasis: 'reliable agentic systems.',
-          summary:
-            'I combine 10+ years of engineering experience with Agentic AI to build systems for PLM, requirements, quality and simulation.',
+          summary: profile.summary,
         }
   const switchAndScroll = (nextMode: ViewMode, targetId: string) => {
     onModeChange(nextMode)
@@ -587,9 +560,15 @@ function HomePage({
             className="relative isolate"
           >
             <ModeSwitchGlow sequence={modeSwitchSequence} className="-inset-x-12 inset-y-8" />
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm text-primary">
-              <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_14px_hsl(var(--primary))]" />
-              {profile.location}
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm text-primary">
+                <MapPin className="h-3.5 w-3.5" />
+                {profile.location}
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 text-sm text-muted-foreground">
+                <BriefcaseBusiness className="h-3.5 w-3.5 text-primary" />
+                Senior Analyst · Accenture DACH
+              </span>
             </div>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -622,30 +601,21 @@ function HomePage({
 
             <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
               <button
-                id="ask-cv-trigger-hero"
-                type="button"
-                onClick={onAsk}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-              >
-                <Bot className="h-4 w-4" />
-                Ask the CV
-              </button>
-              <button
                 type="button"
                 onClick={() => switchAndScroll('deep', 'work')}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 font-medium transition-colors hover:border-primary/50"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
                 <Layers3 className="h-4 w-4" />
-                Explore technical depth
+                View selected work
               </button>
               <a
                 href="/Vipin-Neekamparambath-Resume.pdf"
                 download
                 onClick={() => trackPortfolioEvent('resume_downloaded')}
-                className="inline-flex items-center gap-2 rounded-full px-4 py-3 font-medium text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 font-medium transition-colors hover:border-primary/50"
               >
                 <Download className="h-4 w-4" />
-                Résumé
+                Download résumé
               </a>
             </div>
           </motion.div>
@@ -675,7 +645,7 @@ function HomePage({
             </figure>
           </motion.aside>
 
-          <div className="lg:col-span-2 grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:col-span-2">
             <button
               type="button"
               onClick={() => switchAndScroll('overview', 'quick-scan')}
@@ -693,15 +663,6 @@ function HomePage({
               <Zap className="h-5 w-5 text-primary" />
               <p className="mt-4 font-display font-semibold">Technical deep dive</p>
               <p className="mt-1 text-xs text-muted-foreground">Decisions, trade-offs, and lessons</p>
-            </button>
-            <button
-              type="button"
-              onClick={onAsk}
-              className="group rounded-2xl border border-border bg-card/80 p-4 text-left backdrop-blur hover:border-primary/50"
-            >
-              <Sparkles className="h-5 w-5 text-primary" />
-              <p className="mt-4 font-display font-semibold">Ask the portfolio</p>
-              <p className="mt-1 text-xs text-muted-foreground">Cited answers from approved content</p>
             </button>
           </div>
         </div>
@@ -896,10 +857,11 @@ function App() {
   })
   const [mode, setMode] = useState<ViewMode>(() => {
     const current = new URLSearchParams(window.location.search).get('mode')
-    return current === 'overview' ? 'overview' : 'deep'
+    return current === 'detail' || current === 'deep' ? 'deep' : 'overview'
   })
   const [modeSwitchSequence, setModeSwitchSequence] = useState(0)
   const [chatOpen, setChatOpen] = useState(false)
+  const [chatActivated, setChatActivated] = useState(false)
 
   const changeTheme = useCallback(() => {
     setDark((current) => !current)
@@ -915,7 +877,10 @@ function App() {
     trackPortfolioEvent('mode_selected', { mode: nextMode })
   }, [mode])
 
-  const openChat = useCallback(() => setChatOpen(true), [])
+  const openChat = useCallback(() => {
+    setChatActivated(true)
+    setChatOpen(true)
+  }, [])
   const closeChat = useCallback(() => setChatOpen(false), [])
 
   useEffect(() => {
@@ -938,9 +903,9 @@ function App() {
         onThemeChange={changeTheme}
         mode={mode}
         onModeChange={changeMode}
-        onAsk={openChat}
         projectPage={isProjectPage}
       />
+      <div className="h-16" aria-hidden="true" />
       <div id="main-content" tabIndex={-1}>
         {projectSlug ? (
           <Suspense fallback={<LoadingPage />}>
@@ -951,12 +916,34 @@ function App() {
             mode={mode}
             modeSwitchSequence={modeSwitchSequence}
             onModeChange={changeMode}
-            onAsk={openChat}
           />
         )}
       </div>
       <Footer />
-      {chatOpen && (
+      <button
+        id="ask-cv-floating-trigger"
+        type="button"
+        onClick={openChat}
+        aria-haspopup="dialog"
+        aria-expanded={chatOpen}
+        aria-controls="portfolio-guide-dialog"
+        aria-hidden={chatOpen || undefined}
+        tabIndex={chatOpen ? -1 : 0}
+        className={`chat-launcher inline-flex items-center gap-3 rounded-2xl border border-primary/30 bg-background/95 p-2.5 text-left shadow-2xl shadow-black/20 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-primary/50 ${
+          chatOpen ? 'pointer-events-none invisible' : ''
+        }`}
+      >
+        <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-theme text-white">
+          <Bot className="h-5 w-5" />
+          <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-background bg-success" />
+        </span>
+        <span className="hidden pr-1 sm:block">
+          <span className="block font-display text-sm font-semibold text-foreground">Ask my CV</span>
+          <span className="block text-xs text-muted-foreground">Answers with sources</span>
+        </span>
+        <span className="sr-only sm:hidden">Ask my CV</span>
+      </button>
+      {chatActivated && (
         <Suspense fallback={null}>
           <PortfolioChat open={chatOpen} onClose={closeChat} />
         </Suspense>

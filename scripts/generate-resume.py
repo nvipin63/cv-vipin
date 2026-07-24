@@ -188,6 +188,13 @@ def role_block(item):
     ]
     for highlight in item["highlights"]:
         parts.append(Paragraph(highlight, styles["BulletSmall"], bulletText="•"))
+    parts.append(
+        Paragraph(
+            f"<b>Outcome:</b> {item['outcome']}",
+            styles["BulletSmall"],
+            bulletText="•",
+        )
+    )
     parts.append(Spacer(1, 3.5))
     return KeepTogether(parts)
 
@@ -224,7 +231,10 @@ profile = portfolio["profile"]
 story.extend(
     [
         Paragraph(profile["name"], styles["ResumeName"]),
-        Paragraph("Agentic AI Engineer | GenAI Solution Architecture | Engineering Digitization", styles["ResumeHeadline"]),
+        Paragraph(
+            "Agentic AI Engineer | Senior Analyst, Accenture DACH | Engineering Digitization",
+            styles["ResumeHeadline"],
+        ),
         Paragraph(
             'Munich, Germany | +49 160 96815049 | '
             '<link href="mailto:nvipin63@gmail.com" color="#236fc2">nvipin63@gmail.com</link> | '
@@ -238,32 +248,10 @@ story.extend(section_title("Professional Summary"))
 story.append(Paragraph(profile["about"], styles["BodySmall"]))
 
 story.extend(section_title("Evidence at a Glance"))
-metric_cells = []
-for metric in portfolio["metrics"]:
-    metric_cells.append(
-        [
-            Paragraph(metric["value"], styles["MetricValue"]),
-            Paragraph(metric["label"], styles["MetricLabel"]),
-        ]
-    )
-metric_table = Table(
-    [[cell for metric in metric_cells for cell in metric]],
-    colWidths=[13 * mm, 31.75 * mm] * 4,
-    rowHeights=[18 * mm],
+metric_summary = " | ".join(
+    f"<b>{metric['value']}</b> {metric['label']}" for metric in portfolio["metrics"]
 )
-metric_table.setStyle(
-    TableStyle(
-        [
-            ("BACKGROUND", (0, 0), (-1, -1), PALE),
-            ("BOX", (0, 0), (-1, -1), 0.5, LINE),
-            ("INNERGRID", (0, 0), (-1, -1), 0.35, LINE),
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-            ("LEFTPADDING", (0, 0), (-1, -1), 5),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 4),
-        ]
-    )
-)
-story.extend([metric_table, Spacer(1, 4)])
+story.extend([Paragraph(metric_summary, styles["BodySmall"]), Spacer(1, 3)])
 
 story.extend(section_title("Professional Experience"))
 for experience in portfolio["experience"]:
@@ -272,7 +260,7 @@ for experience in portfolio["experience"]:
 story.append(PageBreak())
 
 story.extend(section_title("Selected Agentic AI and Automation Work"))
-for project in portfolio["projects"]:
+for project in (item for item in portfolio["projects"] if item["featured"]):
     stack = " | ".join(project["stack"][:3])
     story.append(
         Paragraph(
@@ -281,9 +269,18 @@ for project in portfolio["projects"]:
             styles["Project"],
         )
     )
+story.append(
+    Paragraph(
+        'Additional case studies and evidence trails: '
+        '<link href="https://cv-vipin.vercel.app" color="#236fc2">cv-vipin.vercel.app</link>',
+        styles["BodySmall"],
+    )
+)
 
 story.extend(section_title("Capabilities"))
 for group in portfolio["skillGroups"]:
+    if group["title"] == "AI-assisted development":
+        continue
     skills = " | ".join(item["name"] for item in group["items"])
     story.append(Paragraph(f"<b>{group['title']}:</b> {skills}", styles["BodySmall"]))
 story.append(
@@ -299,7 +296,7 @@ education = portfolio["education"]
 story.append(
     Paragraph(
         f"<b>{education['degree']}, {education['specialization']}</b> | {education['institution']} | {education['period']}<br/>"
-        f"Publication: {education['publication']} | CGPA: {education['cgpa']}",
+        f"Publication: {education['publication']} | CGPA: {education['cgpa']}/10",
         styles["BodySmall"],
     )
 )

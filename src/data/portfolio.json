@@ -2,36 +2,36 @@
   "profile": {
     "name": "Vipin Neekamparambath",
     "headline": "Agentic AI Engineer",
-    "supportingTitle": "GenAI solution architecture and engineering digitization",
+    "supportingTitle": "Senior Analyst at Accenture DACH · GenAI solution architecture and engineering digitization",
     "location": "Munich, Germany",
     "email": "nvipin63@gmail.com",
     "linkedin": "https://www.linkedin.com/in/vipin-n",
-    "summary": "I design and deliver production-minded agentic systems that connect engineering workflows, trusted knowledge, coordinated tools, and the people responsible for the final decision.",
-    "about": "With 10+ years across engineering automation and digital transformation, I bring engineering-domain depth to multi-agent orchestration, retrieval-augmented generation, MCP-enabled integration, and AI copilots. My work sits where practical delivery, technical architecture, and adoption meet."
+    "summary": "I architect production-minded agentic systems that connect engineering workflows, trusted knowledge, coordinated tools, validation, and the people responsible for the final decision.",
+    "about": "Agentic AI Engineer and Senior Analyst at Accenture DACH with 10+ years across CAE automation, engineering digitization, and enterprise delivery. I architect multi-agent workflows combining RAG, tools, validation, and human review across PLM, requirements, quality, and simulation. Hands-on with LangChain, LangGraph, Deep Agents, MCP, Python, Azure, and cross-functional delivery."
   },
   "metrics": [
     {
       "id": "metric-years",
       "value": "10+",
-      "label": "years across engineering and transformation",
+      "label": "years in engineering automation and digital delivery",
       "sourceId": "profile-summary"
     },
     {
-      "id": "metric-roles",
+      "id": "metric-agentic-studies",
       "value": "5",
-      "label": "industry roles across the engineering lifecycle",
-      "sourceId": "career-history"
-    },
-    {
-      "id": "metric-systems",
-      "value": "9",
-      "label": "featured AI and automation systems",
+      "label": "Agentic AI and GenAI case studies",
       "sourceId": "project-overview"
     },
     {
+      "id": "metric-compression",
+      "value": "~90%",
+      "label": "smaller Abaqus ODB files in a delivered Python utility",
+      "sourceId": "project-odb-compression"
+    },
+    {
       "id": "metric-domains",
-      "value": "3",
-      "label": "core AI domains: requirements, quality, simulation",
+      "value": "4",
+      "label": "core workflows: PLM, requirements, quality, simulation",
       "sourceId": "project-overview"
     }
   ],
@@ -665,7 +665,7 @@
         "agentic ai",
         "solution architect"
       ],
-      "content": "I am an Agentic AI Engineer based in Munich with 10+ years across engineering automation and digital transformation. I combine engineering-domain knowledge with Python, LangChain, LangGraph, Deep Agents, Google ADK, LLM orchestration, RAG, vector databases for embedding storage and similarity search, MCP-enabled integration, Azure AI Foundry, Azure DevOps, Azure Portal, GCP, Cursor AI, OpenAI Codex, Claude Code, agile delivery, and stakeholder alignment."
+      "content": "I am an Agentic AI Engineer and Senior Analyst at Accenture DACH based in Munich with 10+ years across CAE automation, engineering digitization, and enterprise delivery. I architect multi-agent workflows that combine retrieval, tools, validation, and human review across PLM, requirements, quality, and simulation. My experience includes Python, LangChain, LangGraph, Deep Agents, Google ADK, LLM orchestration, RAG, vector databases for embedding storage and similarity search, MCP-enabled integration, Azure AI Foundry, Azure DevOps, Azure Portal, GCP, agile delivery, and stakeholder alignment."
     },
     {
       "id": "skills-evidence",

@@ -360,6 +360,50 @@ button, a, [role="button"], summary { cursor: pointer; }
   }
 }
 
+/* Adaptive portfolio guide: mobile modal, desktop floating companion */
+.chat-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.chat-panel {
+  position: absolute;
+  top: max(4.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
+  bottom: max(0.5rem, env(safe-area-inset-bottom));
+  left: max(0.5rem, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  pointer-events: auto;
+}
+
+.chat-launcher {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 90;
+}
+
+@media (min-width: 768px) {
+  .chat-panel {
+    top: auto;
+    left: auto;
+    right: max(1.5rem, env(safe-area-inset-right));
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    width: min(26.25rem, calc(100vw - 3rem));
+    height: min(42.5rem, calc(100dvh - 3rem));
+  }
+
+  .chat-launcher {
+    right: max(1.5rem, env(safe-area-inset-right));
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}
+
 /* Custom scrollbar - dark mode aware */
 .custom-scrollbar {
   /* Firefox & modern browsers */
@@ -398,11 +442,13 @@ button, a, [role="button"], summary { cursor: pointer; }
   .bg-primary\/5 { background-color: hsl(var(--primary) / 0.05); }
   .bg-primary\/10 { background-color: hsl(var(--primary) / 0.1); }
   .bg-primary\/20 { background-color: hsl(var(--primary) / 0.2); }
+  .bg-background\/95 { background-color: hsl(var(--background) / 0.95); }
   .bg-accent { background-color: hsl(var(--accent)); }
   .bg-accent\/5 { background-color: hsl(var(--accent) / 0.05); }
   .bg-accent\/10 { background-color: hsl(var(--accent) / 0.1); }
   .bg-accent\/20 { background-color: hsl(var(--accent) / 0.2); }
   .bg-card { background-color: hsl(var(--card)); }
+  .bg-card\/80 { background-color: hsl(var(--card) / 0.8); }
   .bg-border { background-color: hsl(var(--border)); }
 
   .text-foreground { color: hsl(var(--foreground)); }
@@ -414,6 +460,7 @@ button, a, [role="button"], summary { cursor: pointer; }
   .text-card-foreground { color: hsl(var(--card-foreground)); }
 
   .border-border { border-color: hsl(var(--border)); }
+  .border-background { border-color: hsl(var(--background)); }
   .border-primary { border-color: hsl(var(--primary)); }
   .border-primary\/20 { border-color: hsl(var(--primary) / 0.2); }
   .border-primary\/30 { border-color: hsl(var(--primary) / 0.3); }
@@ -438,6 +485,7 @@ button, a, [role="button"], summary { cursor: pointer; }
 
   /* Success semantic color utilities */
   .text-success { color: hsl(var(--success)); }
+  .bg-success { background-color: hsl(var(--success)); }
   .bg-success\/5 { background-color: hsl(var(--success) / 0.05); }
   .bg-success\/10 { background-color: hsl(var(--success) / 0.1); }
   .border-success\/30 { border-color: hsl(var(--success) / 0.3); }

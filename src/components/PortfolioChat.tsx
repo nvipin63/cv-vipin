@@ -27,6 +27,19 @@ const suggestions = [
 
 const MAX_QUESTIONS = 5
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)')
+    const update = () => setIsMobile(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  return isMobile
+}
+
 export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -38,28 +51,41 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
   const [input, setInput] = useState('')
   const [questionCount, setQuestionCount] = useState(0)
   const [loading, setLoading] = useState(false)
+  const isMobile = useIsMobile()
   const panelRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const endRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const messagesRef = useRef<HTMLDivElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!open) return
     returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    window.setTimeout(() => inputRef.current?.focus(), 50)
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80)
 
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
-        return
       }
-      if (event.key !== 'Tab' || !panelRef.current) return
+    }
 
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.clearTimeout(focusTimer)
+      document.removeEventListener('keydown', onKeyDown)
+      returnFocusRef.current?.focus()
+    }
+  }, [onClose, open])
+
+  useEffect(() => {
+    if (!open || !isMobile) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const trapFocus = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== 'Tab' || !panelRef.current) return
       const focusable = Array.from(
         panelRef.current.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), a[href], input:not([disabled])',
+          'button:not([disabled]), a[href], textarea:not([disabled])',
         ),
       )
       if (focusable.length === 0) return
@@ -74,17 +100,17 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
       }
     }
 
-    document.addEventListener('keydown', onKeyDown)
+    document.addEventListener('keydown', trapFocus)
     return () => {
       document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', onKeyDown)
-      returnFocusRef.current?.focus()
+      document.removeEventListener('keydown', trapFocus)
     }
-  }, [onClose, open])
+  }, [isMobile, open])
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    const container = messagesRef.current
+    if (open && container) container.scrollTop = container.scrollHeight
+  }, [messages, open])
 
   async function ask(question: string) {
     const trimmed = question.trim()
@@ -189,7 +215,7 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
     void ask(input)
   }
 
-  function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+  function handleInputKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
       void ask(input)
@@ -201,47 +227,61 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
   const limitReached = questionCount >= MAX_QUESTIONS
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex justify-end bg-black/55 backdrop-blur-sm"
-      role="presentation"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose()
-      }}
-    >
+    <div className="chat-shell" role="presentation">
+      {isMobile && (
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-label="Close portfolio guide"
+          onClick={onClose}
+          className="pointer-events-auto absolute inset-0 cursor-default bg-black/45 backdrop-blur-[2px]"
+        />
+      )}
       <div
+        id="portfolio-guide-dialog"
         ref={panelRef}
         role="dialog"
-        aria-modal="true"
+        aria-modal={isMobile || undefined}
         aria-labelledby="portfolio-guide-title"
-        className="flex h-full w-full max-w-xl flex-col border-l border-border bg-background shadow-2xl"
+        aria-describedby="portfolio-guide-description"
+        className="chat-panel border border-border bg-background shadow-2xl shadow-black/30"
       >
-        <header className="flex items-center justify-between border-b border-border px-5 py-4">
+        <header className="flex items-center justify-between border-b border-border bg-card/80 px-4 py-3.5 backdrop-blur">
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
               <Bot className="h-5 w-5" />
             </span>
-            <div>
+            <div className="min-w-0">
               <h2 id="portfolio-guide-title" className="font-display font-semibold">
-                Vipin&apos;s portfolio guide
+                Ask Vipin&apos;s CV
               </h2>
-              <p className="text-xs text-muted-foreground">Grounded in public, approved content</p>
+              <p id="portfolio-guide-description" className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-success" />
+                Answers with links to the evidence
+              </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full border border-border p-2 text-muted-foreground hover:text-foreground"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
             aria-label="Close portfolio guide"
           >
             <X className="h-4 w-4" />
           </button>
         </header>
 
-        <div className="custom-scrollbar flex-1 space-y-5 overflow-y-auto px-5 py-6" aria-live="polite">
+        <div
+          ref={messagesRef}
+          role="log"
+          aria-live="off"
+          aria-busy={loading}
+          className="custom-scrollbar flex-1 space-y-4 overflow-y-auto px-4 py-5"
+        >
           {messages.map((message, index) => (
             <article
               key={`${message.role}-${index}`}
-              className={message.role === 'user' ? 'ml-12' : 'mr-8'}
+              className={message.role === 'user' ? 'ml-10' : 'mr-5'}
             >
               <p className="mb-1.5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                 {message.role === 'user' ? 'You' : 'Portfolio guide'}
@@ -268,6 +308,8 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
                     <a
                       key={citation.id}
                       href={citation.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs text-primary hover:border-primary/50"
                     >
                       {citation.title}
@@ -277,22 +319,24 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
               )}
             </article>
           ))}
-          <div ref={endRef} />
         </div>
+        <p className="sr-only" role="status" aria-live="polite">
+          {loading ? 'Checking the portfolio.' : questionCount > 0 ? 'Answer ready.' : ''}
+        </p>
 
         {questionCount === 0 && (
-          <div className="border-t border-border px-5 py-4">
+          <div className="border-t border-border px-4 py-3.5">
             <p className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
               Useful starting points
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid gap-2">
               {suggestions.map((suggestion) => (
                 <button
                   key={suggestion}
                   type="button"
                   onClick={() => void ask(suggestion)}
-                  className="rounded-full border border-border bg-card px-3 py-2 text-left text-xs hover:border-primary/50"
+                  className="min-h-11 rounded-xl border border-border bg-card px-3 py-2 text-left text-xs hover:border-primary/50 hover:bg-primary/5"
                 >
                   {suggestion}
                 </button>
@@ -302,31 +346,32 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
         )}
 
         <form onSubmit={submit} className="border-t border-border p-4">
-          <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-2 focus-within:border-primary/50">
+          <div className="flex items-end gap-2 rounded-2xl border border-border bg-card p-1.5 focus-within:border-primary/50">
             <label htmlFor="portfolio-question" className="sr-only">
               Ask about Vipin&apos;s experience
             </label>
-            <input
+            <textarea
               ref={inputRef}
               id="portfolio-question"
+              rows={1}
               value={input}
               onChange={(event) => setInput(event.target.value)}
               onKeyDown={handleInputKeyDown}
               maxLength={500}
               disabled={loading || limitReached}
-              placeholder={limitReached ? 'Question limit reached' : 'Ask about experience, projects, or skills…'}
-              className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground"
+              placeholder={limitReached ? 'Question limit reached' : 'Ask about experience or projects…'}
+              className="max-h-24 min-h-11 min-w-0 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground"
             />
             <button
               type="submit"
               disabled={!input.trim() || loading || limitReached}
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Send question"
             >
               <ArrowUp className="h-4 w-4" />
             </button>
           </div>
-          <p className="mt-2 text-center text-[11px] text-muted-foreground">
+          <p className="mt-2 text-center text-xs text-muted-foreground">
             {questionCount}/{MAX_QUESTIONS} questions · no transcript storage · answers may be incomplete
           </p>
         </form>
