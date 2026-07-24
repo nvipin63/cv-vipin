@@ -920,7 +920,7 @@ function App() {
         )}
       </div>
       <Footer />
-      <button
+      <motion.button
         id="ask-cv-floating-trigger"
         type="button"
         onClick={openChat}
@@ -929,8 +929,13 @@ function App() {
         aria-controls="portfolio-guide-dialog"
         aria-hidden={chatOpen || undefined}
         tabIndex={chatOpen ? -1 : 0}
-        className={`chat-launcher inline-flex items-center gap-3 rounded-2xl border border-primary/30 bg-background/95 p-2.5 text-left shadow-2xl shadow-black/20 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-primary/50 ${
-          chatOpen ? 'pointer-events-none invisible' : ''
+        initial={false}
+        animate={chatOpen ? { opacity: 0, scale: 0.9, y: 12 } : { opacity: 1, scale: 1, y: 0 }}
+        whileHover={chatOpen ? undefined : { y: -2 }}
+        whileTap={chatOpen ? undefined : { scale: 0.97 }}
+        transition={{ duration: chatOpen ? 0.16 : 0.24, ease: 'easeOut' }}
+        className={`chat-launcher inline-flex items-center gap-3 rounded-2xl border border-primary/30 bg-background/95 p-2.5 text-left shadow-2xl shadow-black/20 backdrop-blur-xl hover:border-primary/50 ${
+          chatOpen ? 'pointer-events-none' : ''
         }`}
       >
         <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-theme text-white">
@@ -942,7 +947,7 @@ function App() {
           <span className="block text-xs text-muted-foreground">Answers with sources</span>
         </span>
         <span className="sr-only sm:hidden">Ask my CV</span>
-      </button>
+      </motion.button>
       {chatActivated && (
         <Suspense fallback={null}>
           <PortfolioChat open={chatOpen} onClose={closeChat} />

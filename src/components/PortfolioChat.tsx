@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { ArrowUp, Bot, Loader2, Sparkles, X } from 'lucide-react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { trackPortfolioEvent } from '../lib/analytics'
 
 interface Citation {
@@ -52,6 +53,7 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
   const [questionCount, setQuestionCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const isMobile = useIsMobile()
+  const reduceMotion = useReducedMotion()
   const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
@@ -60,7 +62,8 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
   useEffect(() => {
     if (!open) return
     returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80)
+    const focusDelay = reduceMotion ? 0 : isMobile ? 280 : 180
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), focusDelay)
 
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -74,7 +77,7 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
       document.removeEventListener('keydown', onKeyDown)
       returnFocusRef.current?.focus()
     }
-  }, [onClose, open])
+  }, [isMobile, onClose, open, reduceMotion])
 
   useEffect(() => {
     if (!open || !isMobile) return
@@ -222,30 +225,53 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
     }
   }
 
-  if (!open) return null
-
   const limitReached = questionCount >= MAX_QUESTIONS
 
   return (
     <div className="chat-shell" role="presentation">
-      {isMobile && (
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label="Close portfolio guide"
-          onClick={onClose}
-          className="pointer-events-auto absolute inset-0 cursor-default bg-black/45 backdrop-blur-[2px]"
-        />
-      )}
-      <div
-        id="portfolio-guide-dialog"
-        ref={panelRef}
-        role="dialog"
-        aria-modal={isMobile || undefined}
-        aria-labelledby="portfolio-guide-title"
-        aria-describedby="portfolio-guide-description"
-        className="chat-panel border border-border bg-background shadow-2xl shadow-black/30"
-      >
+      <AnimatePresence>
+        {open && isMobile && (
+          <motion.button
+            key="chat-backdrop"
+            type="button"
+            tabIndex={-1}
+            aria-label="Close portfolio guide"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="pointer-events-auto absolute inset-0 cursor-default bg-black/45 backdrop-blur-[2px]"
+          />
+        )}
+        {open && (
+          <motion.div
+            key="chat-panel"
+            id="portfolio-guide-dialog"
+            ref={panelRef}
+            role="dialog"
+            aria-modal={isMobile || undefined}
+            aria-labelledby="portfolio-guide-title"
+            aria-describedby="portfolio-guide-description"
+            initial={{
+              opacity: 0,
+              y: reduceMotion ? 0 : isMobile ? 28 : 20,
+              scale: reduceMotion ? 1 : isMobile ? 0.985 : 0.94,
+            }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{
+              opacity: 0,
+              y: reduceMotion ? 0 : isMobile ? 16 : 12,
+              scale: reduceMotion ? 1 : 0.975,
+              transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+            }}
+            transition={{
+              opacity: { duration: 0.18, ease: 'easeOut' },
+              y: { type: 'spring', stiffness: 420, damping: 34, mass: 0.8 },
+              scale: { type: 'spring', stiffness: 420, damping: 34, mass: 0.8 },
+            }}
+            className="chat-panel border border-border bg-background shadow-2xl shadow-black/30"
+          >
         <header className="flex items-center justify-between border-b border-border bg-card/80 px-4 py-3.5 backdrop-blur">
           <div className="flex items-center gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
@@ -375,7 +401,9 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
             {questionCount}/{MAX_QUESTIONS} questions · no transcript storage · answers may be incomplete
           </p>
         </form>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

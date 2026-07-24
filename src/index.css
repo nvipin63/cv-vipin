@@ -379,6 +379,8 @@ button, a, [role="button"], summary { cursor: pointer; }
   overflow: hidden;
   border-radius: 1.75rem;
   pointer-events: auto;
+  transform-origin: bottom right;
+  will-change: transform, opacity;
 }
 
 .chat-launcher {
@@ -396,6 +398,7 @@ button, a, [role="button"], summary { cursor: pointer; }
     bottom: max(1.5rem, env(safe-area-inset-bottom));
     width: min(26.25rem, calc(100vw - 3rem));
     height: min(42.5rem, calc(100dvh - 3rem));
+    transform-origin: bottom right;
   }
 
   .chat-launcher {
