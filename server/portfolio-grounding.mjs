@@ -447,4 +447,63 @@ export function publicCitations(sources) {
   return sources.map(({ id, title, href }) => ({ id, title, href }))
 }
 
+export function contextualFollowUps(question, sources) {
+  const candidates = []
+
+  for (const source of sources) {
+    if (source.id === 'project-overview') {
+      candidates.push(
+        'Which projects best demonstrate agentic AI?',
+        'How do the AI projects differ from the automation work?',
+        'Which project is most relevant to an Agentic AI role?',
+      )
+    } else if (source.id.startsWith('project-')) {
+      const projectTitle = source.title.replace(/\s+case study$/i, '')
+      candidates.push(
+        `What problem did ${projectTitle} solve?`,
+        `What technical decisions shaped ${projectTitle}?`,
+        `What impact did ${projectTitle} have?`,
+      )
+      continue
+    }
+
+    if (source.id === 'career-history') {
+      candidates.push(
+        'How did Vipin progress across his career?',
+        'Which engineering domains has Vipin worked in?',
+        'How does his engineering background support his AI work?',
+      )
+    } else if (source.id === 'skills-evidence') {
+      candidates.push(
+        'Which AI frameworks has Vipin used?',
+        'Where has Vipin applied these skills?',
+        'Which cloud platforms appear in his work?',
+      )
+    } else if (source.id === 'profile-summary') {
+      candidates.push(
+        'What makes Vipin suited to an Agentic AI role?',
+        'What is distinctive about his background?',
+        'Which project should I review first?',
+      )
+    } else if (source.id === 'contact') {
+      candidates.push(
+        'Where is Vipin based?',
+        'How can I contact Vipin?',
+        'Which project should I review first?',
+      )
+    }
+  }
+
+  const normalizedQuestion = question.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+  const seen = new Set()
+  return candidates
+    .filter((candidate) => {
+      const normalized = candidate.toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+      if (normalized === normalizedQuestion || seen.has(normalized)) return false
+      seen.add(normalized)
+      return true
+    })
+    .slice(0, 3)
+}
+
 export { portfolio }

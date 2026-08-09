@@ -2,6 +2,7 @@ import cases from '../evals/portfolio-chat-cases.json' with { type: 'json' }
 import {
   buildGroundingPrompt,
   buildRetrievalQuery,
+  contextualFollowUps,
   isPromptInjection,
   portfolio,
   publicCitations,
@@ -169,6 +170,17 @@ const topicSwitchQuery = buildRetrievalQuery([
 ])
 if (topicSwitchQuery.includes('ODB compression')) {
   errors.push('multi-turn retrieval: an explicit new topic was incorrectly treated as a follow-up')
+}
+
+const contextualPrompts = contextualFollowUps(
+  'Tell me about the ODB compression tool.',
+  selectSources('Tell me about the ODB compression tool.'),
+)
+if (contextualPrompts.length !== 3 || !contextualPrompts.every((prompt) => prompt.endsWith('?'))) {
+  errors.push(`contextual follow-ups: expected three questions, received [${contextualPrompts.join(', ')}]`)
+}
+if (contextualPrompts.some((prompt) => /Selected work/i.test(prompt))) {
+  errors.push('contextual follow-ups: project overview was treated as a single project')
 }
 
 if (errors.length > 0) {

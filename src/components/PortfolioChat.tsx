@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { ArrowUp, Bot, Loader2, Sparkles, X } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import ReactMarkdown from 'react-markdown'
 import { trackPortfolioEvent } from '../lib/analytics'
 
 interface Citation {
@@ -13,6 +14,7 @@ interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
   citations?: Citation[]
+  followUps?: string[]
 }
 
 interface PortfolioChatProps {
@@ -165,6 +167,7 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
           const data = JSON.parse(dataLine) as {
             text?: string
             citations?: Citation[]
+            followUps?: string[]
             message?: string
           }
 
@@ -185,6 +188,17 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
               const last = updated[updated.length - 1]
               if (last?.role === 'assistant') {
                 updated[updated.length - 1] = { ...last, citations: data.citations }
+              }
+              return updated
+            })
+          }
+
+          if (eventName === 'follow-ups' && data.followUps) {
+            setMessages((current) => {
+              const updated = [...current]
+              const last = updated[updated.length - 1]
+              if (last?.role === 'assistant') {
+                updated[updated.length - 1] = { ...last, followUps: data.followUps }
               }
               return updated
             })
@@ -320,7 +334,28 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
                 }
               >
                 {message.content ? (
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  message.role === 'assistant' ? (
+                    <div className="chat-markdown">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ children, ...props }) => (
+                            <a
+                              {...props}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-medium text-primary underline decoration-primary/35 underline-offset-2 hover:decoration-primary"
+                            >
+                              {children}
+                            </a>
+                          ),
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  )
                 ) : (
                   <span className="inline-flex items-center gap-2 text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -341,6 +376,27 @@ export default function PortfolioChat({ open, onClose }: PortfolioChatProps) {
                       {citation.title}
                     </a>
                   ))}
+                </div>
+              )}
+              {index === messages.length - 1 && message.followUps && message.followUps.length > 0 && (
+                <div className="mt-3 space-y-2" aria-label="Suggested follow-up questions">
+                  <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    Ask a follow-up
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {message.followUps.map((followUp) => (
+                      <button
+                        key={followUp}
+                        type="button"
+                        onClick={() => void ask(followUp)}
+                        disabled={loading || limitReached}
+                        className="rounded-xl border border-border bg-card px-3 py-2 text-left text-xs leading-snug text-foreground transition hover:border-primary/50 hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {followUp}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </article>

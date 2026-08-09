@@ -408,6 +408,39 @@ button, a, [role="button"], summary { cursor: pointer; }
   }
 }
 
+.chat-markdown > * + * {
+  margin-top: 0.65rem;
+}
+
+.chat-markdown ul,
+.chat-markdown ol {
+  padding-left: 1.15rem;
+}
+
+.chat-markdown ul {
+  list-style: disc;
+}
+
+.chat-markdown ol {
+  list-style: decimal;
+}
+
+.chat-markdown li + li {
+  margin-top: 0.3rem;
+}
+
+.chat-markdown strong {
+  font-weight: 650;
+}
+
+.chat-markdown code {
+  border-radius: 0.35rem;
+  background: hsl(var(--muted));
+  padding: 0.1rem 0.3rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+}
+
 /* Custom scrollbar - dark mode aware */
 .custom-scrollbar {
   /* Firefox & modern browsers */
