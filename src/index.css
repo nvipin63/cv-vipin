@@ -360,7 +360,7 @@ button, a, [role="button"], summary { cursor: pointer; }
   }
 }
 
-/* Adaptive portfolio guide: mobile modal, desktop floating companion */
+/* Floating portfolio guide */
 .chat-shell {
   position: fixed;
   inset: 0;
@@ -370,10 +370,11 @@ button, a, [role="button"], summary { cursor: pointer; }
 
 .chat-panel {
   position: absolute;
-  top: max(4.5rem, env(safe-area-inset-top));
-  right: max(0.5rem, env(safe-area-inset-right));
-  bottom: max(0.5rem, env(safe-area-inset-bottom));
-  left: max(0.5rem, env(safe-area-inset-left));
+  top: auto;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: max(0.75rem, env(safe-area-inset-left));
+  height: min(38rem, calc(100dvh - 5.5rem));
   display: flex;
   flex-direction: column;
   overflow: hidden;
